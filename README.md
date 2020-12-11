@@ -3,7 +3,7 @@
 ## Why ?
 Just like you, we are using Vercel to deploy our apps because that's just so powerful. In our workflow, we run [end-to-end tests](https://www.cypress.io/) on the production URL, to make sure than everything is working.
 
-We got a painfull problem : "Okay, my url is assigned but the code is not deploy yet". Indeed, we don't want to start tests right now, we want the deployment to be fully ready.
+We got a painfull problem: "Okay, my url is assigned but the code is not deploy yet". Indeed, we don't want to start tests right now, we want the deployment to be fully ready.
 
 ## Should I use this action ?
 You should **ONLY** be using this action if you have to work with a fully deployed domain.
