@@ -68,3 +68,24 @@ jobs:
       - name: Display deployment status
         run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
 ```
+
+# Any troubles ?
+It's so painfull to debug an action when you are not in the code itself, and you might have some troubles for thousands of reasons.
+
+That's why we tried to use, as much as we could, [`core.debug`](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs).
+
+It allows you to get extra log when you need to debug.
+
+According to [the official documentation](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#how-to-access-step-debug-logs), you have to set a [**secret**](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets) `ACTIONS_STEP_DEBUG` to `true`, to display this debug.
+
+But if you find any bug :arrow_down: :arrow_down: :arrow_down:
+
+# Contributing
+We are really open to **issues** associated to a **PR** !
+
+# Contributors and maintainers
+This project is being authored by:
+* Hugo Martin (Demmonius) **(active)**
+
+# License
+[MIT](./LICENSE)
