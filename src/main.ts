@@ -6,6 +6,7 @@ import {error} from '@actions/core'
 const DEFAULT_TIMEOUT = 10;
 
 if (!process.env.VERCEL_TOKEN) {
+  console.log(process.env);
   core.setFailed(`Please provide a VERCEL_TOKEN in the "env" section.`);
 }
 
