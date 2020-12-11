@@ -1,0 +1,15 @@
+name: 'Await vercel'
+description: 'Block Github workflow until the deployment is fully ready'
+inputs:
+  url-to-wait:
+    description: 'Url you want to wait'
+    required: true
+  timeout:
+    description: 'Custom timeout value (default: 10000ms)'
+    required: false
+outputs:
+  deploymentDetails:
+    description: 'Deployment object returned by Vercel'
+runs:
+  using: 'node12'
+  main: 'src/index.js'
