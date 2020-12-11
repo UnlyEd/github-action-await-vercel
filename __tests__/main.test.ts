@@ -8,7 +8,7 @@ require('dotenv').config({path: './.env.test'})
 
 // shows how the runner will run a javascript action with env / stdout protocol
 test('test runs', () => {
-  const url = "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.appa";
+  const url = "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app";
   const np = process.execPath
   const ip = path.join(__dirname, '..', 'lib', 'main.js')
   const options: cp.ExecFileSyncOptions = {

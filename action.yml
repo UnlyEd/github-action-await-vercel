@@ -5,7 +5,7 @@ inputs:
     description: 'Url you want to wait'
     required: true
   timeout:
-    description: 'Custom timeout value (default: 10000ms)'
+    description: 'Custom timeout value (default: 10 seconds)'
     required: false
 outputs:
   deploymentDetails:

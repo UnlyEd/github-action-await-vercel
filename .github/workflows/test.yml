@@ -12,13 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          npm install
-      - run: |
-          npm run all
+          yarn
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          milliseconds: 1000
+          url-to-wait: "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.appa",
+          timeout: 10
+        env:
+          VERCEl_TOKEN: ${{ secrets.VERCEl_TOKEN }}
