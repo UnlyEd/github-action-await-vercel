@@ -1,7 +1,7 @@
 import waitDeployment from '../src/waitDeployment'
-import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
+import * as process from 'process';
+import * as cp from 'child_process';
+import * as path from 'path';
 
 require('dotenv').config({path: './.env.test'})
 

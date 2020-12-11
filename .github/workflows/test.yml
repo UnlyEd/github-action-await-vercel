@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        with:
-          url-to-wait: "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.appa",
-          timeout: 10
         env:
           VERCEl_TOKEN: ${{ secrets.VERCEl_TOKEN }}
+        with:
+          url-to-wait: "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.appa"
+          timeout: 10

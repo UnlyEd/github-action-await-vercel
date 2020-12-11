@@ -12,4 +12,4 @@ outputs:
     description: 'Deployment object returned by Vercel'
 runs:
   using: 'node12'
-  main: 'src/index.js'
+  main: 'lib/main.js'
