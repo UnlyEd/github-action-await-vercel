@@ -2,9 +2,14 @@ import waitDeployment from '../src/waitDeployment'
 import * as process from 'process';
 import * as cp from 'child_process';
 import * as path from 'path';
+import {VercelDeployment} from "../src/types/vercel";
+import {error} from "@actions/core";
 
 require('dotenv').config({path: './.env.test'})
 
+const CORRECT_DOMAIN: string = "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app";
+const WRONG_DOMAIN: string = "i-am-wrong.vercel.app";
+const DEFAULT_TIMEOUT: number = 10;
 const nodeExecutor = process.execPath
 const sourcePath = path.join(__dirname, '..', 'lib', 'main.js')
 
@@ -16,7 +21,7 @@ describe("Functionnal test", () => {
     describe('on a valid domain', () => {
         const options: cp.ExecFileSyncOptions = {
             env: {
-                "INPUT_URL-TO-WAIT": "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app",
+                "INPUT_URL-TO-WAIT": CORRECT_DOMAIN,
                 "VERCEL_TOKEN": process.env.VERCEL_TOKEN
             }
         }
@@ -57,7 +62,7 @@ describe("Functionnal test", () => {
     describe('with a wrong token', () => {
         const options: cp.ExecFileSyncOptions = {
             env: {
-                "INPUT_URL-TO-WAIT": "i-am-wrong-domain.vercel.app",
+                "INPUT_URL-TO-WAIT": WRONG_DOMAIN,
                 "VERCEL_TOKEN": "not valid"
             }
         }

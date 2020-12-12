@@ -1,3 +1,7 @@
+![Build](https://github.com/UnlyEd/github-action-await-vercel/workflows/Build/badge.svg)
+![Test](https://github.com/UnlyEd/github-action-await-vercel/workflows/Test/badge.svg)
+
+
 # Await Vercel deployment
 
 ## Why ?
