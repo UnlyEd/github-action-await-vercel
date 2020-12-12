@@ -8,6 +8,7 @@ on: # rebuild any PRs and main branch changes
 
 jobs:
   build: # make sure build/ci work properly
+    name: "Build"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,6 +16,7 @@ jobs:
           yarn
           yarn build
   test: # make sure the action works on a clean machine without building
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
