@@ -17,6 +17,7 @@ export default async function(baseUrl: string, timeout: number): Promise<VercelD
       }).then((data) => data.json()).catch((error: string) => {
         reject(error);
       }));
+      core.debug(`Received these data from Vercel: ${JSON.stringify(deployment)}`)
       if (deployment.readyState === 'READY' || deployment.readyState === 'ERROR') {
         core.debug("Deployment has been found");
         resolve(deployment);

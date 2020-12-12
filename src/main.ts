@@ -21,7 +21,7 @@ async function run(): Promise<void> {
     core.debug(`Timeout used: ${timeout}`);
     waitDeployment(urlToWait, timeout).then((deployment: VercelDeployment) => {
       core.setOutput('deploymentDetails', deployment);
-    }).catch((error: string) => {
+    }).catch((error) => {
       core.setFailed(error);
     });
   } catch (error) {
