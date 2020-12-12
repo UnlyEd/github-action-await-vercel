@@ -1,5 +1,5 @@
 export type VercelDeployment = {
-  id: string,
-  readyState: string,
+  id?: string,
+  readyState?: string,
 
 }
