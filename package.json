@@ -11,8 +11,10 @@
     "format:check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "NODE_ENV=test jest --watch",
+    "test:once": "NODE_ENV=test jest",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:config": "NODE_ENV=test jest --showConfig"
   },
   "repository": {
     "type": "git",
