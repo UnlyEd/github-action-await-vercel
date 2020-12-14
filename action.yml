@@ -1,5 +1,8 @@
-name: 'Await vercel deployment'
-description: 'Block GitHub workflow until the Vercel deployment is ready'
+name: 'Await for Vercel deployment'
+description: 'Awaits for a Vercel deployment to be ready'
+branding:
+  icon: activity
+  color: black
 inputs:
   deployment-url:
     description: 'Url you want to wait for'
