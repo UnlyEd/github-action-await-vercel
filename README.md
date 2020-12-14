@@ -125,6 +125,15 @@ Please see [the official documentation](https://github.com/actions/toolkit/blob/
 
 We gladly accept PRs, but please open an issue first, so we can discuss it beforehand.
 
+## Working locally
+
+### Configuring local tests
+You'll need to create a `.env.test` file based on `.env.test.example`.
+Then, you'll need to create and add your own Vercel token there (`VERCEL_TOKEN`).
+
+This is required because local tests rely on `VERCEL_TOKEN`. 
+_(While integration tests on GitHub rely on the GitHub secret `VERCEL_TOKEN` instead)_
+
 ---
 
 # License
