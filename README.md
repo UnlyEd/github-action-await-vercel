@@ -58,11 +58,13 @@ To get started with this GitHub Action, you'll need:
 - To provide a few required options (like, the domain)
 
 ### GitHub project configuration
-You must declare those variables as **[GitHub Secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**.
+You should declare those variables as **[GitHub Secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**.
 
 Name | Description
 --- | ---
 `VERCEL_TOKEN` | Your [vercel token](https://vercel.com/account/tokens) is required to fetch the Vercel API on your behalf and get the status of your deployment. [See usage in code](https://github.com/UnlyEd/github-action-await-vercel/search?q=VERCEL_TOKEN)
+
+> _**N.B**: You don't have to use a GitHub Secret to provide the `VERCEL_TOKEN`. But you should do so, as it's a good security practice, because this way the token will be [hidden in the logs (encrypted)](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)._ 
 
 ### Action's API
 
