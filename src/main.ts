@@ -27,7 +27,7 @@ const run = (): void => {
   }
 
   try {
-    const urlToWait: string = core.getInput('url-to-wait');
+    const urlToWait: string = core.getInput('deployment-url');
     core.debug(`Url to wait for: ${urlToWait}`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
 
     const timeout: number = (+core.getInput('timeout') || DEFAULT_TIMEOUT) * 1000;

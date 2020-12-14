@@ -20,7 +20,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
-          url-to-wait: nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app
+          deployment-url: nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app
           timeout: 10
 
       - name: Display deployment status
@@ -63,7 +63,7 @@ Name | Description
 #### Inputs
 Name | Required | Description
 ---  | --- |---
-`url-to-wait`|✅|Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
+`deployment-url`|✅|Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
 `timeout`|✖️|Timeout (in seconds), before the action fails (default: `10` seconds)
 
 #### Outputs
@@ -100,7 +100,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
-          url-to-wait: ${{ env.VERCEL_DEPLOYMENT_URL }}
+          deployment-url: ${{ env.VERCEL_DEPLOYMENT_URL }}
           timeout: 10
 
       - name: Displays the deployment name (example on how to read information about the deployment)
@@ -118,6 +118,8 @@ Therefore, it allows you to enable logging whenever you need to debug **what's h
 - `ACTIONS_STEP_DEBUG` of value `true`
 
 Please see [the official documentation](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#how-to-access-step-debug-logs) for more information.
+
+---
 
 # Contributing
 

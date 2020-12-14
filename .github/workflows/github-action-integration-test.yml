@@ -20,6 +20,6 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEl_TOKEN }}
         with:
-          # Testing whether some existing vercel url is properly deployed
-          url-to-wait: "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app"
+          # Testing whether some existing vercel deployment is properly deployed
+          deployment-url: "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app"
           timeout: 10
