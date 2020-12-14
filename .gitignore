@@ -116,7 +116,7 @@ coverage/
 /coverage
 
 # Environment variables
-.env
+.env*
 .env*.local
 !.env*.example
 
