@@ -1,54 +1,83 @@
 <a href="https://unly.org"><img src="https://storage.googleapis.com/unly/images/ICON_UNLY.png" align="right" height="20" alt="Unly logo" title="Unly logo" /></a>
 [![Maintainability](https://api.codeclimate.com/v1/badges/c0cb5c0cecadfb391a1a/maintainability)](https://codeclimate.com/github/UnlyEd/github-action-await-vercel/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c0cb5c0cecadfb391a1a/test_coverage)](https://codeclimate.com/github/UnlyEd/github-action-await-vercel/test_coverage)
-![Build](https://github.com/UnlyEd/github-action-await-vercel/workflows/Build/badge.svg)
-![Test](https://github.com/UnlyEd/github-action-await-vercel/workflows/Test/badge.svg)
+![GitHub Action integration test](https://github.com/UnlyEd/github-action-await-vercel/workflows/GitHub%20Action%20integration%20test/badge.svg)
+![GitHub Action build test](https://github.com/UnlyEd/github-action-await-vercel/workflows/GitHub%20Action%20build%20test/badge.svg)
+![Update Code Climate test coverage](https://github.com/UnlyEd/github-action-await-vercel/workflows/Update%20Code%20Climate%20test%20coverage/badge.svg)
 
-# Await Vercel deployment
+# GitHub Action - Await for a Vercel deployment (to be ready)
 
-## Why ?
-Just like you, we are using Vercel to deploy our apps because that's just so powerful. In our workflow, we run [end-to-end tests](https://www.cypress.io/) on the production URL, to make sure than everything is working.
+## Code snippet example (minimal example)
 
-We got a painfull problem: "Okay, my url is assigned but the code is not deploy yet". Indeed, we don't want to start tests right now, we want the deployment to be fully ready.
+```yaml
+jobs:
+  wait-for-vercel-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: UnlyEd/github-action-await-vercel@v1.0.0
+        id: await-vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        with:
+          url-to-wait: nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app
+          timeout: 10
 
-## Should I use this action ?
-You should **ONLY** be using this action if you have to work with a fully deployed domain.
+      - name: Display deployment status
+        run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
+```
 
-In fact, this action also returns details about the deployment, so it can avoid you to call the vercel API.
+_See the [Examples section](#examples) for more advanced examples._
 
-## How ?
-To make sure than everything is deploy, we just ask to vercel the **state** of the build.
-The workflow is really easy. Please check the **getting start** section.
+## What does this GitHub Action do?
+It waits until a Vercel deployment is marked as "ready". _(See [`readyState === 'READY'`](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters))_
 
+## Why/when should you use it?
+If you're using Vercel to deploy your apps and you use some custom deployment pipeline using GitHub Actions, 
+you might need to wait for a deployment to be ready before running other processes (e.g: Your end-to-end tests using [Cypress](https://www.cypress.io/)).
 
-# Getting start
-In this section, we will describe you each options you can use.
-## Options
+For instance, if you don't wait for the deployment to be ready, 
+then you might sometimes run your E2E tests suite against the Vercel's login page, instead of your actual deployment.
+
+If your GitHub Actions sometimes succeeds but sometimes fails, then you probably need to use this action, 
+which will wait until the Vercel deployment is really ready, before starting your next GitHub Action step.
+
+## What else does this action do?
+This action also returns [additional information about the deployment](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters).
+This can be quite helpful if you need them for your workflow.
+
+## Getting started
+To get started with this GitHub Action, you'll need:
+- To provide a few required options (like, the domain)
+- To configure a Vercel secret, for the GitHub Action to be authorized to fetch your deployments
+
+### Action's API
 Name | Required | Description
 ---  | --- |---
-url-to-wait|X|Deployment url (without the protocol, e.g ~~https~~) or any url working with this endpoint: https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment
-timeout| |Timeout before throwing an error (default: 10seconds)
+url-to-wait|✅|Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
+timeout|✖️|Timeout (in seconds), before the action fails (default: `10` seconds)
 
-## Environment
-We advise you to declare this variable as an **[encrypted secret](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**
-
-Name | Description
---- | ---
-VERCEL_TOKEN | Obviously we need a [vercel token](https://vercel.com/account/tokens) to query there API and get deployment informations. I swear, we are only using it to GET informations.
-
-## Output
-In fact, this action also returns details about the deployment which can be use as you want:
+### GitHub project configuration
+You must declare those variables as **[GitHub Secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**.
 
 Name | Description
 --- | ---
-deploymentDetails | JSON object provided by https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters
+`VERCEL_TOKEN` | Your [vercel token](https://vercel.com/account/tokens) is required to fetch the Vercel API on your behalf and get the status of your deployment. [See usage in code](https://github.com/UnlyEd/github-action-await-vercel/search?q=VERCEL_TOKEN)
 
-Please check the next section to get an example.
-## Example
-We all know how an example is much better than any documentation.
+## Returned value
+This action forwards the [Vercel API response](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) as return value.
 
+Name | Description
+--- | ---
+deploymentDetails | [JSON object](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters). You can also use our [TS type](./blob/main/src/types/VercelDeployment.ts).
 
-**NOTICE** I assume you already have the deployment url. We will be working on an action to retrieve it soon... 
+## Examples
+In the below example, we show you how to:
+
+1. Step 1: Forward `VERCEL_DEPLOYMENT_URL` as an ENV variable, using ` >> $GITHUB_ENV"` which stores the value into the GitHub Actions env vars.
+    Of course, you might do it differently. It doesn't really matter as long as `VERCEL_DEPLOYMENT_URL` is set.
+1. Step 2: Then, we use the `UnlyEd/github-action-await-vercel@v1.0.0` GitHub Action, which waits for the deployment url to be ready.
+1. Step 3: Finally, we show an example on how to read the deployment's information returned by the Vercel API (which have been forwarded).
+
 ```yaml
 on:
   pull_request:
@@ -60,7 +89,7 @@ jobs:
   wait-for-vercel-deployment:
     runs-on: ubuntu-latest
     steps:
-      - name: Retrieve deployment URL
+      - name: Retrieve deployment URL (example on how to set an ENV var)
         run: "echo VERCEL_DEPLOYMENT_URL=nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app >> $GITHUB_ENV"
 
       - uses: UnlyEd/github-action-await-vercel@v1.0.0
@@ -71,23 +100,25 @@ jobs:
           url-to-wait: ${{ env.VERCEL_DEPLOYMENT_URL }}
           timeout: 10
 
-      - name: Display deployment status
-        run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
+      - name: Displays the deployment name (example on how to read information about the deployment)
+        run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).name }}"
 ```
 
-# Any troubles ?
-It's so painfull to debug an action when you are not in the code itself, and you might have some troubles for thousands of reasons.
+Check the documentation to see what information [`deploymentDetails`](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) contains.
 
-That's why we tried to use, as much as we could, [`core.debug`](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs).
+# Debugging the Action - How to enable logs within `github-action-await-vercel` action?
+Our GitHub Action is written using the [`core.debug`](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs) GitHub Actions native API.
 
-It allows you to get extra log when you need to debug.
+Therefore, it allows you to enable logging whenever you need to debug.
 
-According to [the official documentation](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#how-to-access-step-debug-logs), you have to set a [**secret**](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets) `ACTIONS_STEP_DEBUG` to `true`, to display this debug.
+To enable debug mode, you have to set a GitHub [**secret**](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets), such as:
+- `ACTIONS_STEP_DEBUG` of value `true`
 
-But if you find any bug :arrow_down: :arrow_down: :arrow_down:
+Please see [the official documentation](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#how-to-access-step-debug-logs) for more information.
 
 # Contributing
-We are really open to **issues** associated to a **PR** !
+
+We gladly accept PRs, but please open an issue first, so we can discuss it beforehand.
 
 ---
 
