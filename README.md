@@ -109,7 +109,11 @@ jobs:
 
 Check the documentation to see what information [`deploymentDetails`](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) contains.
 
-# Debugging the Action - How to enable logs within `github-action-await-vercel` action?
+# Advanced debugging
+
+> Learn how to enable logging, from within the `github-action-await-vercel` action.
+
+## How to enable debug logs
 Our GitHub Action is written using the GitHub Actions native [`core.debug` API](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs).
 
 Therefore, it allows you to enable logging whenever you need to debug **what's happening within our action**.
