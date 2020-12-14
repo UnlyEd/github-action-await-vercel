@@ -35,7 +35,7 @@ rules: # See https://eslint.org/docs/rules
     - always
   max-len: 0 # Disable line length checks, because the IDE is already configured to warn about it, and it's a waste of time to check for lines that are too long, especially in comments (like this one!)
   strict: 'off'
-  no-console: 1 # Shouldn't use "console", but "logger" instead
+  no-console: 0
   allowArrowFunctions: 0
   no-unused-vars: 0 # Disabled, already handled by @typescript-eslint/no-unused-vars
   import/prefer-default-export: 0 # When there is only a single export from a module, don't enforce a default export, but rather let developer choose what's best
@@ -65,7 +65,6 @@ rules: # See https://eslint.org/docs/rules
         multiline: true
         minProperties: 5
         consistent: true
-  jsx-a11y/anchor-is-valid: warn
   linebreak-style:
     - error
     - unix
