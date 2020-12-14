@@ -32,7 +32,7 @@ function exec_lib(options: cp.ExecFileSyncOptions): string {
     return cp.execFileSync(nodeBinaryPath, [mainFilePath], options).toString();
   } catch (e) {
     console.error(e);
-    return '';
+    throw e;
   }
 }
 
