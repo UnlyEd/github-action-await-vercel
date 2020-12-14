@@ -13,7 +13,7 @@ export type VercelDeployment = {
   functions?: { [functionPath: string]: { memory: number } };
   plan?: string;
   public?: boolean;
-  ownerId: string;
+  ownerId?: string;
   readyState?: 'INITIALIZING' | 'ANALYZING' | 'BUILDING' | 'DEPLOYING' | 'READY' | 'ERROR';
   createdAt?: Date;
   createdIn?: string;
