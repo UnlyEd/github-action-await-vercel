@@ -46,6 +46,10 @@ which will wait until the Vercel deployment is really ready, before starting you
 This action automatically forwards the Vercel API response, which contains [additional information about the deployment](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters).
 This can be quite helpful if you need them, and will avoid for you to have yet to make another call to the Vercel API. It's done for you! :tada:
 
+## Considered alternatives
+
+> Before building our own GitHub Action, we tried using [`wait-for-vercel`](https://github.com/marketplace/actions/wait-for-vercel), but it didn't work correctly.
+
 ## Getting started
 To get started with this GitHub Action, you'll need:
 - To configure a Vercel secret, for the GitHub Action to be authorized to fetch your deployments
