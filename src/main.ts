@@ -9,8 +9,10 @@ import { VercelDeployment } from './types/VercelDeployment';
  */
 const runConfigChecks = () => {
   if (!process.env.VERCEL_TOKEN) {
-    const message = process.env.NODE_ENV === 'test' ?
-      `VERCEL_TOKEN environment variable is not defined. Please define it in the ".env.test" file. See https://vercel.com/account/tokens` : `VERCEL_TOKEN environment variable is not defined. Please create a GitHub "VERCEL_TOKEN" secret. See https://vercel.com/account/tokens`;
+    const message =
+      process.env.NODE_ENV === 'test'
+        ? `VERCEL_TOKEN environment variable is not defined. Please define it in the ".env.test" file. See https://vercel.com/account/tokens`
+        : `VERCEL_TOKEN environment variable is not defined. Please create a GitHub "VERCEL_TOKEN" secret. See https://vercel.com/account/tokens`;
     core.setFailed(message);
     throw new Error(message);
   }

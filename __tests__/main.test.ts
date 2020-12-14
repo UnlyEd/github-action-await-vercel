@@ -1,10 +1,7 @@
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as process from 'process';
-import {
-  BUILD_DIR,
-  BUILD_MAIN_FILENAME,
-} from '../src/config';
+import { BUILD_DIR, BUILD_MAIN_FILENAME } from '../src/config';
 
 /**
  * Enhance the Node.js environment "global" variable to add our own types
