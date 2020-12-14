@@ -61,9 +61,11 @@ describe('Functional test', () => {
     });
 
     describe('using a valid Vercel domain', () => {
+      const MAX_TIMEOUT: string = '2'; // Max timeout in seconds, as string
       const options: cp.ExecFileSyncOptions = {
         env: {
           'INPUT_URL-TO-WAIT': CORRECT_DOMAIN,
+          'INPUT_TIMEOUT': MAX_TIMEOUT,
           'VERCEL_TOKEN': process.env.VERCEL_TOKEN,
         },
       };
@@ -92,9 +94,11 @@ describe('Functional test', () => {
     });
 
     describe('using a wrong Vercel domain', () => {
+      const MAX_TIMEOUT: string = '2'; // Max timeout in seconds, as string
       const options: cp.ExecFileSyncOptions = {
         env: {
           'INPUT_URL-TO-WAIT': 'i-am-wrong-domain.vercel.app',
+          'INPUT_TIMEOUT': MAX_TIMEOUT,
           'VERCEL_TOKEN': process.env.VERCEL_TOKEN,
         },
       };
@@ -109,10 +113,13 @@ describe('Functional test', () => {
         }
       });
     });
+
     describe('using a wrong Vercel token', () => {
+      const MAX_TIMEOUT: string = '5'; // Max timeout in seconds, as string
       const options: cp.ExecFileSyncOptions = {
         env: {
           'INPUT_URL-TO-WAIT': WRONG_DOMAIN,
+          'INPUT_TIMEOUT': MAX_TIMEOUT,
           'VERCEL_TOKEN': 'not valid',
         },
       };
