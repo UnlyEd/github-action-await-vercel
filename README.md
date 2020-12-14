@@ -21,7 +21,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
           deployment-url: nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app
-          timeout: 10
+          timeout: 10 # Wait for 10 seconds before failing
 
       - name: Display deployment status
         run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
@@ -61,10 +61,10 @@ Name | Description
 ### Action's API
 
 #### Inputs
-Name | Required | Description
+Name | Required | Default | Description
 ---  | --- |---
-`deployment-url`|✅|Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
-`timeout`|✖️|Timeout (in seconds), before the action fails (default: `10` seconds)
+`deployment-url`|✅||Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
+`timeout`|✖️|`10`|Duration (in seconds), until the action fails
 
 #### Outputs
 This action forwards the [Vercel API response](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) as return value.
@@ -101,7 +101,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
           deployment-url: ${{ env.VERCEL_DEPLOYMENT_URL }}
-          timeout: 10
+          timeout: 10 # Wait for 10 seconds before failing
 
       - name: Displays the deployment name (example on how to read information about the deployment)
         run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).name }}"
