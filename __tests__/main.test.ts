@@ -28,7 +28,12 @@ function exec_lib(options: cp.ExecFileSyncOptions): string {
    */
   const mainFilePath = path.join(__dirname, '..', BUILD_DIR, BUILD_MAIN_FILENAME);
 
-  return cp.execFileSync(nodeBinaryPath, [mainFilePath], options).toString();
+  try {
+    return cp.execFileSync(nodeBinaryPath, [mainFilePath], options).toString();
+  } catch (e) {
+    console.error(e);
+    return '';
+  }
 }
 
 describe('Functionnal test', () => {
