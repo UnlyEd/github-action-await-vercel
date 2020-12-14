@@ -1,19 +1,40 @@
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as process from 'process';
+import {
+  BUILD_DIR,
+  BUILD_MAIN_FILENAME,
+} from '../src/config';
 
 require('dotenv').config({ path: './.env.test' });
 
-const CORRECT_DOMAIN: string = 'nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app';
-const WRONG_DOMAIN: string = 'i-am-wrong.vercel.app';
-const nodeExecutor = process.execPath;
-const sourcePath = path.join(__dirname, '..', 'lib', 'main.js');
-
+/**
+ * Executes the compiled version of the Action's main file. (.js)
+ *
+ * @param options
+ */
 function exec_lib(options: cp.ExecFileSyncOptions): string {
-  return cp.execFileSync(nodeExecutor, [sourcePath], options).toString();
+  /**
+   * Path of the node.js binary being used.
+   *
+   * @example/usr/local/Cellar/node/14.3.0/bin/node
+   */
+  const nodeBinaryPath = process.execPath;
+
+  /**
+   * Path of the compiled version of the Action file entrypoint.
+   *
+   * @example .../github-action-await-vercel/lib/main.js
+   */
+  const mainFilePath = path.join(__dirname, '..', BUILD_DIR, BUILD_MAIN_FILENAME);
+
+  return cp.execFileSync(nodeBinaryPath, [mainFilePath], options).toString();
 }
 
 describe('Functionnal test', () => {
+  const CORRECT_DOMAIN: string = 'nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app';
+  const WRONG_DOMAIN: string = 'i-am-wrong.vercel.app';
+
   describe('on a valid domain', () => {
     const options: cp.ExecFileSyncOptions = {
       env: {
