@@ -155,21 +155,29 @@ interface AudioWorkletNodeOptions extends AudioNodeOptions {
 
 interface AuthenticationExtensionsClientInputs {
     appid?: string;
-    appidExclude?: string;
-    credProps?: boolean;
+    authnSel?: AuthenticatorSelectionList;
+    exts?: boolean;
+    loc?: boolean;
+    txAuthGeneric?: txAuthGenericArg;
+    txAuthSimple?: string;
+    uvi?: boolean;
     uvm?: boolean;
 }
 
 interface AuthenticationExtensionsClientOutputs {
     appid?: boolean;
-    credProps?: CredentialPropertiesOutput;
+    authnSel?: boolean;
+    exts?: AuthenticationExtensionsSupported;
+    loc?: Coordinates;
+    txAuthGeneric?: ArrayBuffer;
+    txAuthSimple?: string;
+    uvi?: ArrayBuffer;
     uvm?: UvmEntries;
 }
 
 interface AuthenticatorSelectionCriteria {
     authenticatorAttachment?: AuthenticatorAttachment;
     requireResidentKey?: boolean;
-    residentKey?: ResidentKeyRequirement;
     userVerification?: UserVerificationRequirement;
 }
 
@@ -294,10 +302,6 @@ interface ConvolverOptions extends AudioNodeOptions {
 interface CredentialCreationOptions {
     publicKey?: PublicKeyCredentialCreationOptions;
     signal?: AbortSignal;
-}
-
-interface CredentialPropertiesOutput {
-    rk?: boolean;
 }
 
 interface CredentialRequestOptions {
@@ -665,8 +669,6 @@ interface KeyboardEventInit extends EventModifierInit {
     code?: string;
     isComposing?: boolean;
     key?: string;
-    /** @deprecated */
-    keyCode?: number;
     location?: number;
     repeat?: boolean;
 }
@@ -1114,6 +1116,7 @@ interface PublicKeyCredentialDescriptor {
 }
 
 interface PublicKeyCredentialEntity {
+    icon?: string;
     name: string;
 }
 
@@ -1911,6 +1914,11 @@ interface WorkerOptions {
 
 interface WorkletOptions {
     credentials?: RequestCredentials;
+}
+
+interface txAuthGenericArg {
+    content: ArrayBuffer;
+    contentType: string;
 }
 
 interface EventListener {
@@ -3632,6 +3640,17 @@ declare var ConvolverNode: {
     new(context: BaseAudioContext, options?: ConvolverOptions): ConvolverNode;
 };
 
+/** The position and altitude of the device on Earth, as well as the accuracy with which these properties are calculated. */
+interface Coordinates {
+    readonly accuracy: number;
+    readonly altitude: number | null;
+    readonly altitudeAccuracy: number | null;
+    readonly heading: number | null;
+    readonly latitude: number;
+    readonly longitude: number;
+    readonly speed: number | null;
+}
+
 /** This Streams API interface provides a built-in byte length queuing strategy that can be used when constructing streams. */
 interface CountQueuingStrategy extends QueuingStrategy {
     highWaterMark: number;
@@ -3800,7 +3819,7 @@ declare var DOMException: {
 
 /** An object providing methods which are not dependent on any particular document. Such an object is returned by the Document.implementation property. */
 interface DOMImplementation {
-    createDocument(namespace: string | null, qualifiedName: string | null, doctype?: DocumentType | null): XMLDocument;
+    createDocument(namespaceURI: string | null, qualifiedName: string | null, doctype: DocumentType | null): Document;
     createDocumentType(qualifiedName: string, publicId: string, systemId: string): DocumentType;
     createHTMLDocument(title?: string): Document;
     /** @deprecated */
@@ -4168,7 +4187,7 @@ interface DataTransfer {
      * 
      * The possible values are "none", "copy", "link", and "move".
      */
-    dropEffect: "none" | "copy" | "link" | "move";
+    dropEffect: string;
     /**
      * Returns the kinds of operations that are to be allowed.
      * 
@@ -4176,7 +4195,7 @@ interface DataTransfer {
      * 
      * The possible values are "none", "copy", "copyLink", "copyMove", "link", "linkMove", "move", "all", and "uninitialized",
      */
-    effectAllowed: "none" | "copy" | "copyLink" | "copyMove" | "link" | "linkMove" | "move" | "all" | "uninitialized";
+    effectAllowed: string;
     /**
      * Returns a FileList of the files being dragged, if any.
      */
@@ -5149,8 +5168,8 @@ interface Element extends Node, Animatable, ChildNode, InnerHTML, NonDocumentTyp
      * Returns the qualified names of all element's attributes. Can contain duplicates.
      */
     getAttributeNames(): string[];
-    getAttributeNode(qualifiedName: string): Attr | null;
-    getAttributeNodeNS(namespace: string | null, localName: string): Attr | null;
+    getAttributeNode(name: string): Attr | null;
+    getAttributeNodeNS(namespaceURI: string, localName: string): Attr | null;
     getBoundingClientRect(): DOMRect;
     getClientRects(): DOMRectList;
     /**
@@ -5659,52 +5678,6 @@ interface Geolocation {
     getCurrentPosition(successCallback: PositionCallback, errorCallback?: PositionErrorCallback, options?: PositionOptions): void;
     watchPosition(successCallback: PositionCallback, errorCallback?: PositionErrorCallback, options?: PositionOptions): number;
 }
-
-declare var Geolocation: {
-    prototype: Geolocation;
-    new(): Geolocation;
-};
-
-interface GeolocationCoordinates {
-    readonly accuracy: number;
-    readonly altitude: number | null;
-    readonly altitudeAccuracy: number | null;
-    readonly heading: number | null;
-    readonly latitude: number;
-    readonly longitude: number;
-    readonly speed: number | null;
-}
-
-declare var GeolocationCoordinates: {
-    prototype: GeolocationCoordinates;
-    new(): GeolocationCoordinates;
-};
-
-interface GeolocationPosition {
-    readonly coords: GeolocationCoordinates;
-    readonly timestamp: number;
-}
-
-declare var GeolocationPosition: {
-    prototype: GeolocationPosition;
-    new(): GeolocationPosition;
-};
-
-interface GeolocationPositionError {
-    readonly code: number;
-    readonly message: string;
-    readonly PERMISSION_DENIED: number;
-    readonly POSITION_UNAVAILABLE: number;
-    readonly TIMEOUT: number;
-}
-
-declare var GeolocationPositionError: {
-    prototype: GeolocationPositionError;
-    new(): GeolocationPositionError;
-    readonly PERMISSION_DENIED: number;
-    readonly POSITION_UNAVAILABLE: number;
-    readonly TIMEOUT: number;
-};
 
 interface GlobalEventHandlersEventMap {
     "abort": UIEvent;
@@ -8974,10 +8947,6 @@ interface HTMLVideoElement extends HTMLMediaElement {
      */
     height: number;
     /**
-     * Gets or sets the playsinline of the video element. for example, On iPhone, video elements will now be allowed to play inline, and will not automatically enter fullscreen mode when playback begins.
-     */
-    playsInline: boolean;
-    /**
      * Gets or sets a URL of an image to display, for example, like a movie poster. This can be a still frame from the video, or another image if no video data is available.
      */
     poster: string;
@@ -9053,6 +9022,12 @@ declare var History: {
     prototype: History;
     new(): History;
 };
+
+interface HkdfCtrParams extends Algorithm {
+    context: Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer;
+    hash: string | Algorithm;
+    label: Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer;
+}
 
 interface IDBArrayKey extends Array<IDBValidKey> {
 }
@@ -9155,7 +9130,7 @@ interface IDBDatabase extends EventTarget {
      * 
      * Throws a "InvalidStateError" DOMException if not called within an upgrade transaction.
      */
-    createObjectStore(name: string, options?: IDBObjectStoreParameters): IDBObjectStore;
+    createObjectStore(name: string, optionalParameters?: IDBObjectStoreParameters): IDBObjectStore;
     /**
      * Deletes the object store with the given name.
      * 
@@ -9603,8 +9578,8 @@ interface ImageData {
 
 declare var ImageData: {
     prototype: ImageData;
-    new(sw: number, sh: number): ImageData;
-    new(data: Uint8ClampedArray, sw: number, sh?: number): ImageData;
+    new(width: number, height: number): ImageData;
+    new(array: Uint8ClampedArray, width: number, height?: number): ImageData;
 };
 
 interface InnerHTML {
@@ -11812,6 +11787,21 @@ declare var PopStateEvent: {
     new(type: string, eventInitDict?: PopStateEventInit): PopStateEvent;
 };
 
+/** The position of the concerned device at a given time. The position, represented by a Coordinates object, comprehends the 2D position of the device, on a spheroid representing the Earth, but also its altitude and its speed. */
+interface Position {
+    readonly coords: Coordinates;
+    readonly timestamp: number;
+}
+
+/** The reason of an error occurring when using the geolocating device. */
+interface PositionError {
+    readonly code: number;
+    readonly message: string;
+    readonly PERMISSION_DENIED: number;
+    readonly POSITION_UNAVAILABLE: number;
+    readonly TIMEOUT: number;
+}
+
 /** A processing instruction embeds application-specific instructions in XML which can be ignored by other applications that don't recognize them. */
 interface ProcessingInstruction extends CharacterData, LinkStyle {
     readonly ownerDocument: Document;
@@ -12503,11 +12493,6 @@ interface ReadableByteStreamController {
     error(error?: any): void;
 }
 
-declare var ReadableByteStreamController: {
-    prototype: ReadableByteStreamController;
-    new(): ReadableByteStreamController;
-};
-
 /** This Streams API interface represents a readable stream of byte data. The Fetch API offers a concrete instance of a ReadableStream through the body property of a Response object. */
 interface ReadableStream<R = any> {
     readonly locked: boolean;
@@ -12532,21 +12517,11 @@ interface ReadableStreamBYOBReader {
     releaseLock(): void;
 }
 
-declare var ReadableStreamBYOBReader: {
-    prototype: ReadableStreamBYOBReader;
-    new(): ReadableStreamBYOBReader;
-};
-
 interface ReadableStreamBYOBRequest {
     readonly view: ArrayBufferView;
     respond(bytesWritten: number): void;
     respondWithNewView(view: ArrayBufferView): void;
 }
-
-declare var ReadableStreamBYOBRequest: {
-    prototype: ReadableStreamBYOBRequest;
-    new(): ReadableStreamBYOBRequest;
-};
 
 interface ReadableStreamDefaultController<R = any> {
     readonly desiredSize: number | null;
@@ -12555,22 +12530,12 @@ interface ReadableStreamDefaultController<R = any> {
     error(error?: any): void;
 }
 
-declare var ReadableStreamDefaultController: {
-    prototype: ReadableStreamDefaultController;
-    new(): ReadableStreamDefaultController;
-};
-
 interface ReadableStreamDefaultReader<R = any> {
     readonly closed: Promise<void>;
     cancel(reason?: any): Promise<void>;
     read(): Promise<ReadableStreamReadResult<R>>;
     releaseLock(): void;
 }
-
-declare var ReadableStreamDefaultReader: {
-    prototype: ReadableStreamDefaultReader;
-    new(): ReadableStreamDefaultReader;
-};
 
 interface ReadableStreamReader<R = any> {
     cancel(): Promise<void>;
@@ -15434,16 +15399,16 @@ declare var StyleSheetList: {
 /** This Web Crypto API interface provides a number of low-level cryptographic functions. It is accessed via the Crypto.subtle properties available in a window context (via Window.crypto). */
 interface SubtleCrypto {
     decrypt(algorithm: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesCmacParams | AesGcmParams | AesCfbParams, key: CryptoKey, data: Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer): Promise<ArrayBuffer>;
-    deriveBits(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | DhKeyDeriveParams | ConcatParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, length: number): Promise<ArrayBuffer>;
-    deriveKey(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | DhKeyDeriveParams | ConcatParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, derivedKeyType: string | AesDerivedKeyParams | HmacImportParams | ConcatParams | HkdfParams | Pbkdf2Params, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
+    deriveBits(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | DhKeyDeriveParams | ConcatParams | HkdfCtrParams | Pbkdf2Params, baseKey: CryptoKey, length: number): Promise<ArrayBuffer>;
+    deriveKey(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | DhKeyDeriveParams | ConcatParams | HkdfCtrParams | Pbkdf2Params, baseKey: CryptoKey, derivedKeyType: string | AesDerivedKeyParams | HmacImportParams | ConcatParams | HkdfCtrParams | Pbkdf2Params, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
     digest(algorithm: AlgorithmIdentifier, data: Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer): Promise<ArrayBuffer>;
     encrypt(algorithm: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesCmacParams | AesGcmParams | AesCfbParams, key: CryptoKey, data: Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer): Promise<ArrayBuffer>;
     exportKey(format: "jwk", key: CryptoKey): Promise<JsonWebKey>;
     exportKey(format: "raw" | "pkcs8" | "spki", key: CryptoKey): Promise<ArrayBuffer>;
     exportKey(format: string, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer>;
+    generateKey(algorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey>;
     generateKey(algorithm: RsaHashedKeyGenParams | EcKeyGenParams | DhKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair>;
     generateKey(algorithm: AesKeyGenParams | HmacKeyGenParams | Pbkdf2Params, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
-    generateKey(algorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey>;
     importKey(format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | DhImportKeyParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
     importKey(format: "raw" | "pkcs8" | "spki", keyData: Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | DhImportKeyParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
     importKey(format: string, keyData: JsonWebKey | Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | DhImportKeyParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
@@ -15918,11 +15883,6 @@ interface TransformStreamDefaultController<O = any> {
     error(reason?: any): void;
     terminate(): void;
 }
-
-declare var TransformStreamDefaultController: {
-    prototype: TransformStreamDefaultController;
-    new(): TransformStreamDefaultController;
-};
 
 /** Events providing information related to transitions. */
 interface TransitionEvent extends Event {
@@ -18724,11 +18684,6 @@ interface WritableStreamDefaultController {
     error(error?: any): void;
 }
 
-declare var WritableStreamDefaultController: {
-    prototype: WritableStreamDefaultController;
-    new(): WritableStreamDefaultController;
-};
-
 /** This Streams API interface is the object returned by WritableStream.getWriter() and once created locks the < writer to the WritableStream ensuring that no other streams can write to the underlying sink. */
 interface WritableStreamDefaultWriter<W = any> {
     readonly closed: Promise<void>;
@@ -18739,11 +18694,6 @@ interface WritableStreamDefaultWriter<W = any> {
     releaseLock(): void;
     write(chunk: W): Promise<void>;
 }
-
-declare var WritableStreamDefaultWriter: {
-    prototype: WritableStreamDefaultWriter;
-    new(): WritableStreamDefaultWriter;
-};
 
 /** An XML document. It inherits from the generic Document and does not add any specific methods or properties to it: nevertheless, several algorithms behave differently with the two types of documents. */
 interface XMLDocument extends Document {
@@ -19247,11 +19197,11 @@ interface PerformanceObserverCallback {
 }
 
 interface PositionCallback {
-    (position: GeolocationPosition): void;
+    (position: Position): void;
 }
 
 interface PositionErrorCallback {
-    (positionError: GeolocationPositionError): void;
+    (positionError: PositionError): void;
 }
 
 interface QueuingStrategySizeCallback<T = any> {
@@ -19531,8 +19481,7 @@ declare var location: Location;
 declare var locationbar: BarProp;
 declare var menubar: BarProp;
 declare var msContentScript: ExtensionScriptApis;
-/** @deprecated */
-declare const name: void;
+declare const name: never;
 declare var navigator: Navigator;
 declare var offscreenBuffering: string | boolean;
 declare var oncompassneedscalibration: ((this: Window, ev: Event) => any) | null;
@@ -19962,6 +19911,9 @@ type PerformanceEntryList = PerformanceEntry[];
 type ReadableStreamReadResult<T> = ReadableStreamReadValueResult<T> | ReadableStreamReadDoneResult<T>;
 type VibratePattern = number | number[];
 type COSEAlgorithmIdentifier = number;
+type AuthenticatorSelectionList = AAGUID[];
+type AAGUID = BufferSource;
+type AuthenticationExtensionsSupported = string[];
 type UvmEntry = number[];
 type UvmEntries = UvmEntry[];
 type AlgorithmIdentifier = string | Algorithm;
@@ -20001,7 +19953,7 @@ type WindowProxy = Window;
 type AlignSetting = "center" | "end" | "left" | "right" | "start";
 type AnimationPlayState = "finished" | "idle" | "paused" | "running";
 type AppendMode = "segments" | "sequence";
-type AttestationConveyancePreference = "direct" | "enterprise" | "indirect" | "none";
+type AttestationConveyancePreference = "direct" | "indirect" | "none";
 type AudioContextLatencyCategory = "balanced" | "interactive" | "playback";
 type AudioContextState = "closed" | "running" | "suspended";
 type AuthenticatorAttachment = "cross-platform" | "platform";
@@ -20113,7 +20065,6 @@ type RequestCredentials = "include" | "omit" | "same-origin";
 type RequestDestination = "" | "audio" | "audioworklet" | "document" | "embed" | "font" | "image" | "manifest" | "object" | "paintworklet" | "report" | "script" | "sharedworker" | "style" | "track" | "video" | "worker" | "xslt";
 type RequestMode = "cors" | "navigate" | "no-cors" | "same-origin";
 type RequestRedirect = "error" | "follow" | "manual";
-type ResidentKeyRequirement = "discouraged" | "preferred" | "required";
 type ResizeQuality = "high" | "low" | "medium" | "pixelated";
 type ResponseType = "basic" | "cors" | "default" | "error" | "opaque" | "opaqueredirect";
 type ScopedCredentialType = "ScopedCred";

@@ -27,6 +27,10 @@ interface SharedArrayBuffer {
      */
     readonly byteLength: number;
 
+    /*
+     * The SharedArrayBuffer constructor's length property whose value is 1.
+     */
+    length: number;
     /**
      * Returns a section of an SharedArrayBuffer.
      */
