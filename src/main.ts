@@ -19,7 +19,9 @@ const runConfigChecks = () => {
  */
 const run = (): void => {
   if (!core.isDebug()) {
-    core.info('Logs are limited because you did not enable the debug mode. You can find more informations here: https://github.com/UnlyEd/github-action-await-vercel/#any-troubles-');
+    core.info(
+      'Logs are limited because you did not enable the debug mode. You can find more informations here: https://github.com/UnlyEd/github-action-await-vercel/#any-troubles-',
+    );
   }
 
   try {

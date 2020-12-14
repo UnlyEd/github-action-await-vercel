@@ -26,7 +26,10 @@ describe('Functionnal test', () => {
        Then, from this command, we can get a string which contains every logs/actions performed in it.
        We are not interested by debug lines so we remove them.
      */
-    const filteredContent = exec_lib(options).split('\n').filter((lineDisplayed) => !lineDisplayed.startsWith('::debug::')).join();
+    const filteredContent = exec_lib(options)
+      .split('\n')
+      .filter((lineDisplayed) => !lineDisplayed.startsWith('::debug::'))
+      .join();
 
     test('should not return an error', () => {
       expect(filteredContent.includes('name=deploymentDetails::')).toBe(true);
@@ -53,7 +56,6 @@ describe('Functionnal test', () => {
         expect(errorString.includes('not_found')).toBe(true);
       }
     });
-
   });
   describe('with a wrong token', () => {
     const options: cp.ExecFileSyncOptions = {
@@ -74,4 +76,3 @@ describe('Functionnal test', () => {
     });
   });
 });
-
