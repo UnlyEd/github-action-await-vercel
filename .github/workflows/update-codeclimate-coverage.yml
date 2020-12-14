@@ -1,6 +1,5 @@
 # Summary:
 # Run Unit and coverage tests, then upload it to Code Climate dashboard
-# Read ./README.md for extensive documentation
 
 name: Update Code Climate test coverage
 

@@ -1,7 +1,11 @@
+# Keeping your actions up to date with Dependabot
+# You can use Dependabot to keep the actions you use updated to the latest versions.
+# See https://docs.github.com/en/free-pro-team@latest/github/administering-a-repository/keeping-your-actions-up-to-date-with-dependabot#enabling-dependabot-version-updates-for-actions
+
 version: 2
 updates:
   # Enable version updates for npm
-  - package-ecosystem: 'yarn'
+  - package-ecosystem: 'github-actions'
     # Look for `package.json` and `lock` files in the `root` directory
     directory: '/'
     # Check the npm registry for updates every day (weekdays)

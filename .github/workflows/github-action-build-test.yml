@@ -1,4 +1,8 @@
-name: 'Build'
+# Summary:
+# Test if the the GitHub Action builds correctly.
+# Makes sure the GitHub Action builds when being built by GitHub Actions.
+
+name: 'GitHub Action build test'
 on:
   pull_request:
   push:
@@ -7,7 +11,7 @@ on:
       - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
+  run-build-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

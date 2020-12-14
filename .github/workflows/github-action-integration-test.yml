@@ -1,0 +1,25 @@
+# Summary:
+# Test the GitHub Action using an integration test.
+# Makes sure the GitHub Action works properly when running on a clean machine, without building anything (integration test).
+# This integration test might break if the Vercel project or deployment is deleted in the future.
+
+name: 'GitHub Action integration test'
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  run-integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEl_TOKEN }}
+        with:
+          # Testing whether some existing vercel url is properly deployed
+          url-to-wait: "nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app"
+          timeout: 10
