@@ -62,8 +62,8 @@ Name | Description
 
 #### Inputs
 Name | Required | Default | Description
----  | --- |---
-`deployment-url`|✅||Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
+---  | --- |--- |---
+`deployment-url`|✅| |Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
 `timeout`|✖️|`10`|Duration (in seconds), until the action fails
 
 #### Outputs
