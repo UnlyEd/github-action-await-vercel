@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
+import awaitVercelDeployment from './awaitVercelDeployment';
 import { DEFAULT_TIMEOUT } from './config';
 import { VercelDeployment } from './types/VercelDeployment';
-import awaitVercelDeployment from './awaitVercelDeployment';
 
 /**
  * Runs configuration checks to make sure everything is properly configured.
@@ -9,8 +9,10 @@ import awaitVercelDeployment from './awaitVercelDeployment';
  */
 const runConfigChecks = () => {
   if (!process.env.VERCEL_TOKEN) {
-    console.log(process.env);
-    core.setFailed(`Please provide a VERCEL_TOKEN in the "env" section.`);
+    const message = process.env.NODE_ENV === 'test' ?
+      `VERCEL_TOKEN environment variable is not defined. Please define it in the ".env.test" file. See https://vercel.com/account/tokens` : `VERCEL_TOKEN environment variable is not defined. Please create a GitHub "VERCEL_TOKEN" secret. See https://vercel.com/account/tokens`;
+    core.setFailed(message);
+    throw new Error(message);
   }
 };
 
