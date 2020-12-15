@@ -71,8 +71,13 @@ Name | Description
 #### Inputs
 Name | Required | Default | Description
 ---  | --- |--- |---
-`deployment-url`|✅| |Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`)
-`timeout`|✖️|`10`|Duration (in seconds), until the action fails
+`deployment-url`|✅| |Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`).
+`timeout`|✖️|`10`|How long (in seconds) the action waits for the deployment status to reach either `READY` or `ERROR` state.
+
+> **Tip**: You might want to adapt the `timeout` to your use case.
+> - For instance, if you're calling this action **right after having triggered the Vercel deployment**, then it'll go through `INITIALIZING > ANALYZING > BUILDING > DEPLOYING` phases before reaching `READY` or `ERROR` state.
+> This might take quite some time (depending on your project), and increasing the timeout to `600` (10mn) (or similar) is probably what you'll want to do in such case, because you need to take into account the time it'll take for Vercel to deploy.
+> - The default of `10` seconds is because we _assume_ you'll call this action after the deployment has reached `BUILDING` state, and the time it takes for Vercel to reach `READY` or `ERROR` from `BUILDING` is rather short.
 
 #### Outputs
 This action forwards the [Vercel API response](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) as return value.
