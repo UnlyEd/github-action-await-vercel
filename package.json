@@ -1,8 +1,8 @@
 {
   "name": "github-action-await-vercel",
-  "version": "0.0.0",
   "private": true,
   "description": "GitHub Action - Awaits for a Vercel deployment to be ready",
+  "homepage": "https://github.com/UnlyEd/github-action-await-vercel",
   "main": "lib/main.js",
   "scripts": {
     "start": "yarn build",
@@ -22,11 +22,15 @@
     "url": "git+https://github.com/UnlyEd/github-action-await-vercel.git"
   },
   "keywords": [
+    "github",
+    "github actions",
     "actions",
-    "node",
-    "setup"
+    "vercel deployment",
+    "vercel",
+    "await",
+    "deployment"
   ],
-  "author": "",
+  "author": "UnlyEd",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "1.2.6",
