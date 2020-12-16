@@ -21,6 +21,9 @@ declare global {
 /**
  * Executes the compiled version of the Action's main file. (.js)
  *
+ * The goal is to test the file that is actually executed by GitHub Action.
+ * Additionally, we could also test the TS files, but we didn't do it to avoid over-complicating things (didn't seem necessary).
+ *
  * @param options
  */
 function exec_lib(options: cp.ExecFileSyncOptions): string {

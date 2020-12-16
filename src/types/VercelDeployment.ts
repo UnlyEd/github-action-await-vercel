@@ -1,7 +1,7 @@
 /**
  * Vercel deployment shape returned by the Vercel API.
  *
- * @see https://vercel.com/docs/api#endpoints/deployments/create-a-new-deployment/response-parameters
+ * @see https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters
  */
 export type VercelDeployment = {
   id?: string;
