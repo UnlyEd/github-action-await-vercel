@@ -28,6 +28,8 @@ jobs:
         run: yarn install
       - uses: paambaati/codeclimate-action@v2.7.5
         env:
+          # XXX Necessary for running tests properly (required). Do not generate the token from a Vercel account with actual production usage. (use a dummy account)
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # XXX Define this secret in "Github repo > Settings > Secrets", you can get it from Vercel at https://vercel.com/account/tokens
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }} # XXX Define this secret in "Github repo > Settings > Secrets", you can get it from Code Climate in "Repo settings > Test coverage".
         with:
           coverageCommand: yarn test:coverage
