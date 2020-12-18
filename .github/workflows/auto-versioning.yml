@@ -25,6 +25,7 @@ jobs:
         with: # See https://github.com/phish108/autotag-action/tree/1.1.30#inputs
           github-token: ${{ secrets.GITHUB_TOKEN}}
           with-v: "true"
+          release-branch: "main"
       - run: |
           echo ${{join(steps.next_semantic_version.outputs.*, ' - ')}}
           echo "Version: ${{steps.next_semantic_version.outputs.tag}}"
