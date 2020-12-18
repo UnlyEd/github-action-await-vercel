@@ -20,7 +20,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
-          deployment-url: nextjs.github-action-await-vercel.vercel.app # TODO Replace by the domain you want to test
+          deployment-url: nextjs-bzyss249z.vercel.app # TODO Replace by the domain you want to test
           timeout: 10 # Wait for 10 seconds before failing
 
       - name: Display deployment status
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Retrieve deployment URL (example on how to set an ENV var)
-        run: "echo VERCEL_DEPLOYMENT_URL=nextjs.github-action-await-vercel.vercel.app >> $GITHUB_ENV"
+        run: "echo VERCEL_DEPLOYMENT_URL=nextjs-bzyss249z.vercel.app >> $GITHUB_ENV"
 
       - uses: UnlyEd/github-action-await-vercel@v1.1.0
         id: await-vercel
