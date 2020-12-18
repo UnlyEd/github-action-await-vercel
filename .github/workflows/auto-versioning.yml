@@ -1,0 +1,28 @@
+# Summary:
+#
+
+name: 'Auto version increment'
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+      - '*' # XXX for testing
+
+jobs:
+  run-integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: paulhatch/semantic-version@v3.1.2
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a major (breaking) change
+          major_pattern: "(MAJOR)"
+          # Same as above except indicating a minor change
+          minor_pattern: "(MINOR)"
+          # A string to determine the format of the version output
+          format: "${major}.${minor}.${patch}-prerelease.${increment}"
+
