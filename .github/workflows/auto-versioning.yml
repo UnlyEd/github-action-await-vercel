@@ -11,12 +11,13 @@ on:
       - '*' # XXX for testing
 
 jobs:
-  run-integration-test:
+  run-semantic-versioning:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: paulhatch/semantic-version@v3.1.2
         with:
+          fetch-depth: 0
           # The prefix to use to identify tags
           tag_prefix: "v"
           # A string which, if present in a git commit, indicates that a change represents a major (breaking) change
@@ -25,4 +26,3 @@ jobs:
           minor_pattern: "(MINOR)"
           # A string to determine the format of the version output
           format: "${major}.${minor}.${patch}-prerelease.${increment}"
-
