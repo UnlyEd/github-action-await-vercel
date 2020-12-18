@@ -1,9 +1,9 @@
 # Summary:
 # Test the GitHub Action using an integration test.
 # Makes sure the GitHub Action works properly when running on a clean machine, without building anything (integration test).
-# This integration test might break if the Vercel project or deployment is deleted in the future.
+# This integration test will break if the Vercel project or deployment are deleted, or if the VERCEl_TOKEN doesn't have access to the deployment url.
 
-name: 'GitHub Action integration test'
+name: 'Run integration test'
 on:
   pull_request:
   push:

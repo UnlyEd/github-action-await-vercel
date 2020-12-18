@@ -2,7 +2,7 @@
 # Test if the the GitHub Action builds correctly.
 # Makes sure the GitHub Action builds when being built by GitHub Actions.
 
-name: 'GitHub Action build test'
+name: 'Checks if the Action builds correctly'
 on:
   pull_request:
   push:
