@@ -30,6 +30,7 @@ jobs:
         env:
           # XXX Necessary for running tests properly (required). Do not generate the token from a Vercel account with actual production usage. (use a dummy account)
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # XXX Define this secret in "Github repo > Settings > Secrets", you can get it from Vercel at https://vercel.com/account/tokens
+          VERCEL_DOMAIN: ${{ secrets.VERCEL_DOMAIN }} # XXX Define this secret in "Github repo > Settings > Secrets", it should use a domain the VERCEL_TOKEN you provided has access to
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }} # XXX Define this secret in "Github repo > Settings > Secrets", you can get it from Code Climate in "Repo settings > Test coverage".
         with:
           coverageCommand: yarn test:coverage

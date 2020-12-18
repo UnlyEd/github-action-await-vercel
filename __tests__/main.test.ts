@@ -52,7 +52,7 @@ function exec_lib(options: cp.ExecFileSyncOptions): string {
 }
 
 describe('Functional test', () => {
-  const CORRECT_DOMAIN: string = 'nrn-v2-mst-aptd-gcms-lcz-sty-c1-hfq88g3jt.vercel.app';
+  const CORRECT_DOMAIN: string = `${process.env.VERCEL_DOMAIN}`;
   const WRONG_DOMAIN: string = 'i-am-wrong.vercel.app';
 
   describe('should pass when', () => {
