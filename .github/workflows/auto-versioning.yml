@@ -30,3 +30,4 @@ jobs:
       - run: |
           echo ${{join(steps.next_semantic_version.outputs.*, ' - ')}}
           echo "Next version: ${{steps.next_semantic_version.outputs.version}}"
+          echo "Next version tag: ${{steps.next_semantic_version.outputs.version_tag}}"
