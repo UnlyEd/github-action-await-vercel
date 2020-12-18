@@ -24,7 +24,7 @@ jobs:
           node-version: '12.x' # Use the same node.js version as the one Vercel's uses (currently node12.x)
   run-tests-coverage:
     name: Run tests coverage and send report to Code Climate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
       - name: Installing dependencies
