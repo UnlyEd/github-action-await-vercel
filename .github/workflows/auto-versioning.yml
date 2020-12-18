@@ -20,13 +20,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
-      - uses: phish108/autotag-action@1.1.30
-        id: next_semantic_version # Outputs: https://github.com/phish108/autotag-action/tree/1.1.30#outputs
-        with: # See https://github.com/phish108/autotag-action/tree/1.1.30#inputs
-          github-token: ${{ secrets.GITHUB_TOKEN}}
-          with-v: "true"
-          release-branch: "main"
-      - run: |
-          echo ${{join(steps.next_semantic_version.outputs.*, ' - ')}}
-          echo "Version: ${{steps.next_semantic_version.outputs.tag}}"
-          echo "Next version tag: ${{steps.next_semantic_version.outputs.new-tag}}"
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with: # See https://github.com/marketplace/actions/automatic-releases#supported-parameters
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Automatic release"
+          files: |
+            CHANGELOG.md
