@@ -1,5 +1,6 @@
 # Summary:
-# On a release, automatically update the tag
+# On a release, automatically update the major tag to make it point to the latest version of any minor/patch release, for easy use by the consumers.
+# Also releases a "latest" tag automatically, which is meant to be used for development/testing only, not for production.
 
 name: 'GitHub Action tag releases'
 on:
@@ -10,7 +11,7 @@ jobs:
   actions-tagger:
     runs-on: ubuntu-latest
     steps:
-      - uses: Actions-R-Us/actions-tagger@v2.0.1
+      - uses: Actions-R-Us/actions-tagger@v2.0.1 # See https://github.com/Actions-R-Us/actions-tagger
         env:
           GITHUB_TOKEN: "${{ github.token }}"
         with:
