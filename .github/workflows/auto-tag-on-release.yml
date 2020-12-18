@@ -3,6 +3,8 @@
 # Also updates the "latest" tag automatically (auto-created), which is meant to be used for development/testing only, not for production.
 # This way, consumers can use @v1 and the @v1 is a tag that is automatically updated when you release a new v1 minor/patch version.
 # Note that if you release a "pre-release", it won't automatically update the "latest" tag, nor the MAJOR tag.
+#
+# See https://github.com/Actions-R-Us/actions-tagger https://github.com/Actions-R-Us/actions-tagger/releases/tag/v2.0.1
 
 name: 'Auto-tag upon release'
 on:
@@ -13,7 +15,7 @@ jobs:
   actions-tagger:
     runs-on: ubuntu-latest
     steps:
-      - uses: Actions-R-Us/actions-tagger@v2.0.1 # See https://github.com/Actions-R-Us/actions-tagger
+      - uses: Actions-R-Us/actions-tagger@v2.0.1
         env:
           GITHUB_TOKEN: "${{ github.token }}"
         with:

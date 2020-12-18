@@ -1,5 +1,7 @@
 # Summary:
+# Automatically increase the version using semantic versioning
 #
+# See https://github.com/PaulHatch/semantic-version https://github.com/PaulHatch/semantic-version/tree/v3.1.2
 
 name: 'Auto version increment'
 on:

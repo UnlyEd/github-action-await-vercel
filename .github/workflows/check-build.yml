@@ -1,6 +1,8 @@
 # Summary:
 # Test if the the GitHub Action builds correctly.
 # Makes sure the GitHub Action builds when being built by GitHub Actions.
+#
+# See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v2
 
 name: 'Checks if the Action builds correctly'
 on:
