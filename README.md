@@ -48,7 +48,7 @@ This can be quite helpful if you need them, and will avoid for you to have yet t
 
 ## Considered alternatives
 
-> Before building our own GitHub Action, we tried using [`wait-for-vercel`](https://github.com/marketplace/actions/wait-for-vercel), but it didn't work correctly.
+> Before building our own GitHub Action, we tried using [`wait-for-vercel`](https://github.com/mskelton/wait-for-vercel-action), but it didn't work correctly.
 > 
 > Part of the issue is that it fetches all deployments for a team/project, which leads to extra issues when you have multiple deployments running in parallel.
 
