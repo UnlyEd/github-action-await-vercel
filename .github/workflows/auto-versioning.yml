@@ -17,9 +17,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
       - uses: paulhatch/semantic-version@v3.1.2
         with: # See https://github.com/PaulHatch/semantic-version#usage
-          fetch_depth: 0 # See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
           tag_prefix: "v" # The prefix to use to identify tags
           major_pattern: "(MAJOR)" # A string which, if present in a git commit, indicates that a change represents a major (breaking) change
           minor_pattern: "(MINOR)" # Same as above except indicating a minor change
