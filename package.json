@@ -12,6 +12,8 @@
     "format:preview": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
+    "bump:major": "git commit --allow-empty -m \"(MAJOR) Fake commit, bumps major version\"",
+    "bump:minor": "git commit --allow-empty -m \"(MINOR) Fake commit, bumps minor version\"",
     "test": "NODE_ENV=test jest --watch",
     "test:once": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage",
