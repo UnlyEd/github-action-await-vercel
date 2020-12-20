@@ -36,7 +36,7 @@ jobs:
         with: # See https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0#supported-parameters
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{steps.next_semantic_version.outputs.version_tag}}
-          prerelease: true
+          prerelease: false
           title: "Automatic release ${{steps.next_semantic_version.outputs.version_tag}}"
           files: |
             CHANGELOG.md
