@@ -9,7 +9,6 @@ on:
   push:
     branches:
       - main
-      - '*' # For testing/debugging
 
 jobs:
   tag-and-release:
