@@ -15,7 +15,8 @@
     "test": "NODE_ENV=test jest --watch",
     "test:once": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage",
-    "test:config": "NODE_ENV=test jest --showConfig"
+    "test:config": "NODE_ENV=test jest --showConfig",
+    "act:actions:list": "act --version && act --list"
   },
   "repository": {
     "type": "git",

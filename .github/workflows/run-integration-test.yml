@@ -2,6 +2,8 @@
 # Test the GitHub Action using an integration test.
 # Makes sure the GitHub Action works properly when running on a clean machine, without building anything (integration test).
 # This integration test will break if the Vercel project or deployment are deleted, or if the VERCEl_TOKEN doesn't have access to the deployment url.
+#
+# See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v2
 
 name: 'Run integration test'
 on:
@@ -13,7 +15,7 @@ on:
 
 jobs:
   run-integration-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - uses: ./
