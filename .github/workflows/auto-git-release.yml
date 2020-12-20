@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+#      - master # Enable if you use "master" instead of "main"
 
 jobs:
   tag-and-release:
