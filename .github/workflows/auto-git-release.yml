@@ -3,6 +3,7 @@
 #
 # See https://github.com/PaulHatch/semantic-version https://github.com/PaulHatch/semantic-version/tree/v3.2
 # See https://github.com/marvinpinto/action-automatic-releases https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0
+# See https://github.com/Actions-R-Us/actions-tagger https://github.com/Actions-R-Us/actions-tagger/releases/tag/v2.0.1
 
 name: 'Auto release'
 on:
@@ -40,3 +41,14 @@ jobs:
           title: "Automatic release ${{steps.next_semantic_version.outputs.version_tag}}"
           files: |
             CHANGELOG.md
+
+      # Update major tag and latest
+      # Upon AUTOMATIC release, automatically update the MAJOR tag to make it point to the latest version of any minor/patch release, for easy use by the consumers.
+      # Also updates the "latest" tag automatically (auto-created), which is meant to be used for development/testing only, not for production.
+      # This way, consumers can use @v1 and the @v1 is a tag that is automatically updated when you release a new v1 minor/patch version.
+      # Note that if you release a "pre-release", it won't automatically update the "latest" tag, nor the MAJOR tag.
+      - uses: Actions-R-Us/actions-tagger@v2.0.1
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+        with:
+          publish_latest_tag: true
