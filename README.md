@@ -176,6 +176,32 @@ Then, you'll need to create and add your own Vercel token there (`VERCEL_TOKEN`)
 
 ---
 
+# Changelog
+[Changelog](./CHANGELOG.md)
+
+---
+
+# Releases versioning
+We follow Semantic Versioning. (`major.minor.patch`)
+
+Our versioning process is completely automated, any changes landing on the `main` branch will trigger a new [release](https://github.com/UnlyEd/github-action-await-vercel/releases).
+
+- `MAJOR`: Behavioral change of the existing API that would result in a breaking change.
+  - E.g: Removing an input, or changing the output would result in a breaking change and thus would be released as a new MAJOR version.
+- `Minor`: Behavioral change of the existing API that would **not** result in a breaking change.
+  - E.g: Adding an optional input would result in a non-breaking change and thus would be released as a new Minor version.
+- `Patch`: Any other change.
+  - E.g: Documentation, tests, refactoring, bug fix, etc.
+
+## Releases versions:
+- We do not provide major versions that are automatically updated (e.g: `v1`).
+- We only provide tags/releases that are not meant to be changed once released (e.g: `v1.1.0`).
+
+> As utility, we provide a special [`latest`](https://github.com/UnlyEd/github-action-await-vercel/releases/tag/latest) tag which is automatically updated to the latest release.
+> _This tag/release is **not meant to be used in production systems**, as it is not reliable (might jump to the newest MAJOR version at any time)._
+
+---
+
 # License
 [MIT](./LICENSE)
 
