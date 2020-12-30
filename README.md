@@ -94,6 +94,8 @@ Name | Description
 `deploymentDetails` | [JSON object](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters). You can also use our [TS type](./blob/main/src/types/VercelDeployment.ts).
 
 ## Examples
+
+### 1. Manually set a hardcoded Vercel deployment url as `deployment-url` (as GitHub env variable)
 In the below example, we show you how to:
 
 1. **Step 1**: Forward `VERCEL_DEPLOYMENT_URL` as an ENV variable, using ` >> $GITHUB_ENV"` which stores the value into the GitHub Actions env vars.
@@ -128,6 +130,17 @@ jobs:
 ```
 
 Check the documentation to see what information [`deploymentDetails`](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) contains.
+
+### 2. Dynamically resolve the Vercel deployment url 
+
+This is a real-world use case example, from [Next Right Now](https://github.com/UnlyEd/next-right-now).
+
+The workflow is a bit more complicated:
+1. All Vercel deployments for the team are fetched dynamically.
+1. Then the latest deployment url is extracted and used as `deployment-url` input by `github-action-await-vercel`.
+1. Once the deployment is ready, the `run-2e2-tests` job is started (using Cypress).
+
+[See code](https://github.com/UnlyEd/next-right-now/blob/v4.0.12-v2-mst-aptd-at-lcz-sty/.github/workflows/deploy-vercel-staging.yml#L174-L236)
 
 # Advanced debugging
 
