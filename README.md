@@ -24,38 +24,45 @@ jobs:
           timeout: 10 # Wait for 10 seconds before failing
 
       - name: Display deployment status
-        run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
+        run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
 ```
 
 _See the [Examples section](#examples) for more advanced examples._
 
 ## What does this GitHub Action do?
-It waits until a Vercel deployment is marked as "ready". _(See [`readyState === 'READY'`](https://vercel.com/docs/api#endpoints/deployments/create-a-new-deployment/response-parameters))_
+It waits until a Vercel deployment domain is marked as "READY". _(See [`readyState === 'READY'`](https://vercel.com/docs/api#endpoints/deployments/create-a-new-deployment/response-parameters))_
+
+You must know the domain url you want to await for and provide it as `deployment-url` input.
 
 ## Why/when should you use it?
-If you're using Vercel to deploy your apps and you use some custom deployment pipeline using GitHub Actions, 
-you might need to wait for a deployment to be ready before running other processes (e.g: Your end-to-end tests using [Cypress](https://www.cypress.io/)).
+If you're using Vercel to deploy your apps, and you use some custom deployment pipeline using GitHub Actions, 
+you might need to wait for a deployment to be ready before running other processes _(e.g: Your end-to-end tests using [Cypress](https://www.cypress.io/))_.
 
-For instance, if you don't wait for the deployment to be ready, 
+> For instance, if you don't wait for the deployment to be ready, 
 then you might sometimes run your E2E tests suite against the Vercel's login page, instead of your actual deployment.
 
-If your GitHub Actions sometimes succeeds but sometimes fails, then you probably need to use this action, 
-which will wait until the Vercel deployment is really ready, before starting your next GitHub Action step.
+If your GitHub Actions sometimes succeeds but sometimes fails, then you probably need to await for the domain to be ready. 
+This action might help doing so, as it will wait until the Vercel deployment is really ready, before starting your next GitHub Action step.
 
 ## What else does this action do?
 This action automatically forwards the Vercel API response, which contains [additional information about the deployment](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters).
-This can be quite helpful if you need them, and will avoid for you to have yet to make another call to the Vercel API. It's done for you! :tada:
+This can be quite helpful if you need them, and will avoid for you to have yet to make another call to the Vercel API.
 
 ## Considered alternatives
 
-> Before building our own GitHub Action, we tried using [`wait-for-vercel`](https://github.com/mskelton/wait-for-vercel-action), but it didn't work correctly.
-> 
-> Part of the issue is that it fetches all deployments for a team/project, which leads to extra issues when you have multiple deployments running in parallel.
+### 1. [`wait-for-vercel`](https://github.com/mskelton/wait-for-vercel-action)
+
+Before building our own GitHub Action, we tried using [`wait-for-vercel`](https://github.com/mskelton/wait-for-vercel-action), but it didn't handle our use case properly.
+
+Part of the issue is that it fetches **all deployments for a team/project**, which leads to **extra issues when you have multiple deployments running in parallel**. _(as it won't necessarily fetch the domain you expect, it's a bit random when multiple deployments are running in parallel)_
+
+> **If you are/were using `wait-for-vercel`**, please note `github-action-await-vercel` works slightly differently, as it requires the `deployment-url` input, while `wait-for-vercel` didn't.
+> But this ensures you await for the proper domain to be deployed, and is safe, even when multiple deployments are running in parallel.
 
 ## Getting started
 To get started with this GitHub Action, you'll need:
 - To configure a Vercel secret, for the GitHub Action to be authorized to fetch your deployments
-- To provide a few required options (like, the domain)
+- To provide a few required options (like, the domain you want to await for)
 
 ### GitHub project configuration
 You should declare those variables as **[GitHub Secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**.
@@ -71,7 +78,7 @@ Name | Description
 #### Inputs
 Name | Required | Default | Description
 ---  | --- |--- |---
-`deployment-url`|✅| |Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`).
+`deployment-url`|✅| |Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`, `my-app.vercel.app`, etc.).
 `timeout`|✖️|`10`|How long (in seconds) the action waits for the deployment status to reach either `READY` or `ERROR` state.
 
 > **Tip**: You might want to adapt the `timeout` to your use case.
@@ -89,10 +96,10 @@ Name | Description
 ## Examples
 In the below example, we show you how to:
 
-1. Step 1: Forward `VERCEL_DEPLOYMENT_URL` as an ENV variable, using ` >> $GITHUB_ENV"` which stores the value into the GitHub Actions env vars.
+1. **Step 1**: Forward `VERCEL_DEPLOYMENT_URL` as an ENV variable, using ` >> $GITHUB_ENV"` which stores the value into the GitHub Actions env vars.
     Of course, you might do it differently. It doesn't really matter as long as `VERCEL_DEPLOYMENT_URL` is set.
-1. Step 2: Then, we use the `UnlyEd/github-action-await-vercel@v1.1.0` GitHub Action, which waits for the deployment url to be ready.
-1. Step 3: Finally, we show an example on how to read the deployment's information returned by the Vercel API (which have been forwarded).
+1. **Step 2**: Then, we use the `UnlyEd/github-action-await-vercel@v1.1.0` GitHub Action, which waits for the deployment url to be ready.
+1. **Step 3**: Finally, we show an example on how to read the deployment's information returned by the Vercel API (which have been forwarded).
 
 ```yaml
 on:
@@ -117,7 +124,7 @@ jobs:
           timeout: 10 # Wait for 10 seconds before failing
 
       - name: Displays the deployment name (example on how to read information about the deployment)
-        run: "echo My deployment is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).name }}"
+        run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
 ```
 
 Check the documentation to see what information [`deploymentDetails`](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) contains.
@@ -131,11 +138,13 @@ Our GitHub Action is written using the GitHub Actions native [`core.debug` API](
 
 Therefore, it allows you to enable logging whenever you need to debug **what's happening within our action**.
 
-**To enable debug mode**, you have to set a GitHub [**secret**](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets), such as:
+**To enable debug mode**, you have to set a [**GitHub Secret**](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets#creating-encrypted-secrets), such as:
 - `ACTIONS_STEP_DEBUG` of value `true`
 
 Please see [the official documentation](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#how-to-access-step-debug-logs) for more information.
 
+> Enabling debugging using `ACTIONS_STEP_DEBUG` will also enable debugging for all other GitHub Actions you use that are using the `core.debug` API.
+ 
 ---
 
 # Contributing
@@ -146,10 +155,11 @@ We gladly accept PRs, but please open an issue first, so we can discuss it befor
 
 ### Configuring local tests
 You'll need to create a `.env.test` file based on `.env.test.example`.
-Then, you'll need to create and add your own Vercel token there (`VERCEL_TOKEN`).
+Then, you'll need to create and add your own Vercel token there (`VERCEL_TOKEN`), and change the `VERCEL_DOMAIN` being tested to a domain you own (any Vercel domain will do).
 
-This is required because local tests rely on `VERCEL_TOKEN`. 
-_(While integration tests on GitHub rely on the GitHub secret `VERCEL_TOKEN` instead)_
+> Local tests rely on the **environment variable** `VERCEL_TOKEN`, and must use your own Vercel account and credentials.
+>
+> Integration tests (on GitHub) rely on the **GitHub secret** `VERCEL_TOKEN` instead, and use a dedicated Vercel account.
 
 ---
 
