@@ -142,6 +142,8 @@ The workflow is a bit more complicated:
 
 [See code](https://github.com/UnlyEd/next-right-now/blob/v4.0.12-v2-mst-aptd-at-lcz-sty/.github/workflows/deploy-vercel-staging.yml#L174-L236)
 
+---
+
 # Advanced debugging
 
 > Learn how to enable logging, from within the `github-action-await-vercel` action.
@@ -157,7 +159,7 @@ Therefore, it allows you to enable logging whenever you need to debug **what's h
 Please see [the official documentation](https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#how-to-access-step-debug-logs) for more information.
 
 > Enabling debugging using `ACTIONS_STEP_DEBUG` will also enable debugging for all other GitHub Actions you use that are using the `core.debug` API.
- 
+
 ---
 
 # Contributing
