@@ -4,7 +4,7 @@
 #
 # See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v2
 
-name: 'Checks if the Action builds correctly'
+name: 'GitHub Action build test'
 on:
   pull_request:
   push:
