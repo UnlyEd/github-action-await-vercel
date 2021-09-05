@@ -68,3 +68,14 @@ jobs:
           generate_release_notes: true
           files: |
             CHANGELOG.md
+
+      - name: Updating Git release tag for the major "${{steps.next_semantic_version.outputs.major}}-rc" version
+        uses: softprops/action-gh-release@v1
+        with: # See https://github.com/softprops/action-gh-release#-customizing
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          tag_name: "${{steps.next_semantic_version.outputs.major}}-rc"
+          name: "${{steps.next_semantic_version.outputs.major}}-rc latest release (auto-update)"
+          prerelease: true
+          generate_release_notes: true
+          files: |
+            CHANGELOG.md
