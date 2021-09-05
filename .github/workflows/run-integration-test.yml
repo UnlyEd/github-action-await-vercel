@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - run: yarn # Install all dependencies
       - uses: ./
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEl_TOKEN }}
