@@ -127,3 +127,7 @@ yarn-error.log*
 
 # Tmp files (cache, etc.)
 *.cache
+github-action-runtime/stats.json
+
+# NPM modules
+node_modules/
