@@ -127,11 +127,7 @@ yarn-error.log*
 
 # Tmp files (cache, etc.)
 *.cache
+github-action-runtime/stats.json
 
 # NPM modules
 node_modules/
-
-# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-github-action-runtime/stats.json
