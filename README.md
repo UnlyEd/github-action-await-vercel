@@ -15,7 +15,7 @@ jobs:
   wait-for-vercel-deployment:
     runs-on: ubuntu-18.04
     steps:
-      - uses: UnlyEd/github-action-await-vercel@v1.1.0
+      - uses: UnlyEd/github-action-await-vercel@v1.2.14
         id: await-vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -100,7 +100,7 @@ In the below example, we show you how to:
 
 1. **Step 1**: Forward `VERCEL_DEPLOYMENT_URL` as an ENV variable, using ` >> $GITHUB_ENV"` which stores the value into the GitHub Actions env vars.
     Of course, you might do it differently. It doesn't really matter as long as `VERCEL_DEPLOYMENT_URL` is set.
-1. **Step 2**: Then, we use the `UnlyEd/github-action-await-vercel@v1.1.0` GitHub Action, which waits for the deployment url to be ready.
+1. **Step 2**: Then, we use the `UnlyEd/github-action-await-vercel@v1.2.14` GitHub Action, which waits for the deployment url to be ready.
 1. **Step 3**: Finally, we show an example on how to read the deployment's information returned by the Vercel API (which have been forwarded).
 
 ```yaml
@@ -117,7 +117,7 @@ jobs:
       - name: Retrieve deployment URL (example on how to set an ENV var)
         run: "echo VERCEL_DEPLOYMENT_URL=nextjs-bzyss249z.vercel.app >> $GITHUB_ENV"
 
-      - uses: UnlyEd/github-action-await-vercel@v1.1.0
+      - uses: UnlyEd/github-action-await-vercel@v1.2.14
         id: await-vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
