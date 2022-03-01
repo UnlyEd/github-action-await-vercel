@@ -10,13 +10,17 @@ import { VercelDeployment } from './types/VercelDeployment';
  * @param timeout Duration (in seconds) until we'll await for.
  *  When the timeout is reached, the Promise is rejected (the action will fail).
  */
-const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<VercelDeployment> => {
+const awaitVercelDeployment = (baseUrl: string, teamId: string | undefined, timeout: number): Promise<VercelDeployment> => {
   return new Promise(async (resolve, reject) => {
     let deployment: VercelDeployment = {};
     const timeoutTime = new Date().getTime() + timeout;
 
     while (new Date().getTime() < timeoutTime) {
-      deployment = await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
+      let url = `${VERCEL_BASE_API_ENDPOINT}/v13/deployments/${baseUrl}`;
+      if (teamId) {
+        url += `?teamId=${teamId}`;
+      }
+      deployment = await fetch(url, {
         headers: {
           Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
         },
@@ -29,6 +33,7 @@ const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<Vercel
         core.debug('Deployment has been found');
         return resolve(deployment);
       }
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second to avoid rate limit
     }
     core.debug(`Last deployment response: ${JSON.stringify(deployment)}`);
 

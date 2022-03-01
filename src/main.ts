@@ -27,13 +27,16 @@ const run = (): void => {
   }
 
   try {
-    const urlToWait: string = core.getInput('deployment-url');
+    const urlToWait: string = core.getInput('deployment-url', { required: true });
     core.debug(`Url to wait for: ${urlToWait}`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
 
     const timeout: number = (+core.getInput('timeout') || DEFAULT_TIMEOUT) * 1000;
     core.debug(`Timeout used: ${timeout}`);
 
-    awaitVercelDeployment(urlToWait, timeout)
+    const teamId: string = core.getInput('team-id');
+    core.debug(`teamId: ${teamId}`);
+
+    awaitVercelDeployment(urlToWait, teamId, timeout)
       .then((deployment: VercelDeployment) => {
         core.setOutput('deploymentDetails', deployment);
       })
