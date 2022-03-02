@@ -10,6 +10,9 @@ inputs:
   timeout:
     description: 'Custom timeout value (default: "10" (seconds))'
     required: false
+  team-id:
+    description: 'Vercel team id'
+    required: false
 outputs:
   deploymentDetails:
     description: 'Forwarded Vercel API response - See https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters'
