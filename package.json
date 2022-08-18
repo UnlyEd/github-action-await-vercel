@@ -37,7 +37,7 @@
   "author": "UnlyEd",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "1.2.6",
+    "@actions/core": "1.9.1",
     "dotenv": "8.2.0",
     "eslint-plugin-prettier": "3.2.0",
     "node-fetch": "2.6.1"
