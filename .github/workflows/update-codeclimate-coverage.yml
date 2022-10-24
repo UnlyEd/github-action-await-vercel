@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Installing dependencies
         run: yarn install
-      - uses: paambaati/codeclimate-action@v2.7.5
+      - uses: paambaati/codeclimate-action@v3.2.0
         env:
           # XXX Necessary for running tests properly (required). Do not generate the token from a Vercel account with actual production usage. (use a dummy account)
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # XXX Define this secret in "Github repo > Settings > Secrets", you can get it from Vercel at https://vercel.com/account/tokens
