@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
-      - uses: paulhatch/semantic-version@v3.2.1
+      - uses: paulhatch/semantic-version@v5.0.0
         id: next_semantic_version # Output: https://github.com/PaulHatch/semantic-version/blob/master/index.js#L63-L69
         with: # See https://github.com/PaulHatch/semantic-version#usage
           branch: main # Force "main" instead of "master" by default
