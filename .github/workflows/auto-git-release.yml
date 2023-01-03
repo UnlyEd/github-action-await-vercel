@@ -15,7 +15,7 @@ jobs:
   tag-and-release:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
       - uses: paulhatch/semantic-version@v3.2.1
