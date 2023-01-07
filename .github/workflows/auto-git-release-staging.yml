@@ -27,7 +27,6 @@ jobs:
           major_pattern: "(MAJOR)" # A string which, if present in a git commit, indicates that a change represents a major (breaking) change
           minor_pattern: "(MINOR)" # Same as above except indicating a minor change
           version_format: "${major}.${minor}.${patch}-rc.${increment}" # A string to determine the format of the version output
-          short_tags: false # If set to false, short tags like "v1" will not be considered, only full versions tags such as "v1.0.0" will be used to determine the version. XXX This is necessary because of our "auto-tag-on-release" which updates "latest-rc" and would cause conflicts
           bump_each_commit: true # If this input is set to true, every commit will be treated as a new version, bumping the patch, minor, or major version based on the commit message.
 
       - name: Printing semantic-version outputs (for debugging)
