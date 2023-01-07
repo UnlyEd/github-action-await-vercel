@@ -27,7 +27,7 @@ jobs:
           major_pattern: "(MAJOR)" # A string which, if present in a git commit, indicates that a change represents a major (breaking) change
           minor_pattern: "(MINOR)" # Same as above except indicating a minor change
           version_format: "${major}.${minor}.${patch}-rc.${increment}" # A string to determine the format of the version output
-          bump_each_commit: true # If this input is set to true, every commit will be treated as a new version, bumping the patch, minor, or major version based on the commit message.
+          bump_each_commit: false # If this input is set to true, every commit will be treated as a new version, bumping the patch, minor, or major version based on the commit message.
 
       - name: Printing semantic-version outputs (for debugging)
         run: |
