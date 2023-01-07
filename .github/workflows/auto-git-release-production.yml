@@ -43,6 +43,7 @@ jobs:
           echo "increment: ${{steps.next_semantic_version.outputs.increment}}"
           echo "version_type: ${{steps.next_semantic_version.outputs.version_type}}"
           echo "changed: ${{steps.next_semantic_version.outputs.changed}}"
+          echo "authors: ${{steps.next_semantic_version.outputs.authors}}"
           echo "version_tag: ${{steps.next_semantic_version.outputs.version_tag}}"
           echo "previous_commit: ${{steps.next_semantic_version.outputs.previous_commit}}"
           echo "current_commit: ${{steps.next_semantic_version.outputs.current_commit}}"
