@@ -34,7 +34,7 @@ jobs:
           echo "Most useful outputs:"
           echo "Next version: ${{steps.next_semantic_version.outputs.version}}"
           echo "Next version tag: ${{steps.next_semantic_version.outputs.version_tag}}"
-          echo "\n All outputs:"
+          echo -e "\n All outputs:"
           echo "version: ${{steps.next_semantic_version.outputs.version}}"
           echo "major: ${{steps.next_semantic_version.outputs.major}}"
           echo "minor: ${{steps.next_semantic_version.outputs.minor}}"
