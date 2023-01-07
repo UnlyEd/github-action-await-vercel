@@ -9,29 +9,35 @@ on:
   push:
     branches:
       - main
-#      - master # Enable if you use "master" instead of "main"
 
 jobs:
   tag-and-release:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - name: Fetching all commits for the current branch
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
-      - uses: paulhatch/semantic-version@v5.0.2
-        id: next_semantic_version # Output: https://github.com/PaulHatch/semantic-version/blob/master/index.js#L63-L69
+          fetch-depth: 0 # Force fetch all commits - See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
+
+      # Outputs documentation: https://github.com/PaulHatch/semantic-version/blob/master/src/main.ts#L22-L33
+      - name: Resolving next Release Candidate version using semantic-version
+        uses: paulhatch/semantic-version@v5.0.2
+        id: next_semantic_version
         with: # See https://github.com/PaulHatch/semantic-version#usage
           tag_prefix: "v" # The prefix to use to identify tags
           major_pattern: "(MAJOR)" # A string which, if present in a git commit, indicates that a change represents a major (breaking) change
           minor_pattern: "(MINOR)" # Same as above except indicating a minor change
-          version_format: "${major}.${minor}.${patch}-prerelease.${increment}" # A string to determine the format of the version output
-          short_tags: false # If set to false, short tags like "v1" will not be considered, only full versions tags such as "v1.0.0" will be used to determine the version. XXX This is necessary because of our "auto-tag-on-release" which updates "latest" and causes conflicts
+          version_format: "${major}.${minor}.${patch}-rc.${increment}" # A string to determine the format of the version output
+          short_tags: false # If set to false, short tags like "v1" will not be considered, only full versions tags such as "v1.0.0" will be used to determine the version. XXX This is necessary because of our "auto-tag-on-release" which updates "latest" and would cause conflicts
           bump_each_commit: true # If this input is set to true, every commit will be treated as a new version, bumping the patch, minor, or major version based on the commit message.
-      - run: |
-          echo ${{join(steps.next_semantic_version.outputs.*, ' - ')}}
+
+      - name: Printing semantic-version outputs (for debugging)
+        run: |
           echo "Next version: ${{steps.next_semantic_version.outputs.version}}"
           echo "Next version tag: ${{steps.next_semantic_version.outputs.version_tag}}"
-      - uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
+
+      - name: Creating Git release tag for the ${{steps.next_semantic_version.outputs.version}} version
+        uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
         with: # See https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0#supported-parameters
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{steps.next_semantic_version.outputs.version_tag}}
@@ -39,11 +45,13 @@ jobs:
           title: "Automatic release ${{steps.next_semantic_version.outputs.version_tag}}"
           files: |
             CHANGELOG.md
-      - uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
+
+      - name: Updating Git release tag for "latest" version
+        uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
         with: # See https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0#supported-parameters
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: latest
-          prerelease: true
+          prerelease: false
           title: "Latest release (auto-update) - UNSAFE for production usage"
           files: |
             CHANGELOG.md
