@@ -32,8 +32,20 @@ jobs:
 
       - name: Printing semantic-version outputs (for debugging)
         run: |
+          echo "Most useful outputs:"
           echo "Next version: ${{steps.next_semantic_version.outputs.version}}"
           echo "Next version tag: ${{steps.next_semantic_version.outputs.version_tag}}"
+          echo "\n All outputs:"
+          echo "version: ${{steps.next_semantic_version.outputs.version}}"
+          echo "major: ${{steps.next_semantic_version.outputs.major}}"
+          echo "minor: ${{steps.next_semantic_version.outputs.minor}}"
+          echo "patch: ${{steps.next_semantic_version.outputs.patch}}"
+          echo "increment: ${{steps.next_semantic_version.outputs.increment}}"
+          echo "version_type: ${{steps.next_semantic_version.outputs.version_type}}"
+          echo "changed: ${{steps.next_semantic_version.outputs.changed}}"
+          echo "version_tag: ${{steps.next_semantic_version.outputs.version_tag}}"
+          echo "previous_commit: ${{steps.next_semantic_version.outputs.previous_commit}}"
+          echo "current_commit: ${{steps.next_semantic_version.outputs.current_commit}}"
 
       - name: Creating Git release tag for the ${{steps.next_semantic_version.outputs.version}} version
         uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
