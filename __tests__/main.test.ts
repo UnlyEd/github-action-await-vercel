@@ -9,9 +9,9 @@ import {BUILD_DIR, BUILD_MAIN_FILENAME} from '../src/config';
  * @see https://stackoverflow.com/a/42304473/2391795
  */
 declare global {
-  const muteConsole: () => any;
-  const muteConsoleButLog: () => any;
-  const unmuteConsole: () => any;
+  let muteConsole: () => any;
+  let muteConsoleButLog: () => any;
+  let unmuteConsole: () => any;
 }
 
 /**
