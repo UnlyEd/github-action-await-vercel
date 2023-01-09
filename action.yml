@@ -14,5 +14,5 @@ outputs:
   deploymentDetails:
     description: 'Forwarded Vercel API response - See https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'github-action-runtime/index.js'
