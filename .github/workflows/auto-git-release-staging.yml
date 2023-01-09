@@ -48,21 +48,23 @@ jobs:
           echo "current_commit: ${{steps.next_semantic_version.outputs.current_commit}}"
 
       - name: Creating Git release tag for the ${{steps.next_semantic_version.outputs.version}} version
-        uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
-        with: # See https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0#supported-parameters
+        uses: softprops/action-gh-release@v1
+        with: # See https://github.com/softprops/action-gh-release#-customizing
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{steps.next_semantic_version.outputs.version}}
+          name: ${{steps.next_semantic_version.outputs.version}}
+          body: "Automatic release ${{steps.next_semantic_version.outputs.version}}"
           prerelease: true
-          title: "Automatic release ${{steps.next_semantic_version.outputs.version}}"
+          generate_release_notes: true
           files: |
             CHANGELOG.md
 
       - name: Updating Git release tag for "latest-rc" version
-        uses: marvinpinto/action-automatic-releases@10bdce64abdb4558a2ee6983192242be40d631d8 # Pin "latest" https://github.com/marvinpinto/action-automatic-releases/commit/10bdce64abdb4558a2ee6983192242be40d631d8 necessary to avoid "The `set-env` command is disabled."
-        with: # See https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0#supported-parameters
+        uses: softprops/action-gh-release@v1
+        with: # See https://github.com/softprops/action-gh-release#-customizing
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: latest-rc
+          name: latest-rc
+          body: "Latest release (auto-update) - UNSAFE for production usage"
           prerelease: true
-          title: "Latest release (auto-update) - UNSAFE for production usage"
+          generate_release_notes: true
           files: |
             CHANGELOG.md
