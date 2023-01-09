@@ -11,10 +11,11 @@ on:
 
 jobs:
   run-build-test:
-    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        version: [ 14, 16, 18 ]
+        os: [ ubuntu-22.04, ubuntu-20.04 ]
+        version: [ 14, 16, 18, 20 ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - run: |
