@@ -70,7 +70,7 @@ jobs:
           files: |
             CHANGELOG.md
 
-      - name: Updating Git release tag for the major "${{steps.next_semantic_version.outputs.major}}" version
+      - name: Updating Git release tag for the major "v${{steps.next_semantic_version.outputs.major}}" version
         uses: softprops/action-gh-release@v1
         with: # See https://github.com/softprops/action-gh-release#-customizing
           token: "${{ secrets.GITHUB_TOKEN }}"

@@ -47,12 +47,12 @@ jobs:
           echo "previous_commit: ${{steps.next_semantic_version.outputs.previous_commit}}"
           echo "current_commit: ${{steps.next_semantic_version.outputs.current_commit}}"
 
-      - name: Creating Git release tag for the ${{steps.next_semantic_version.outputs.version}} version
+      - name: Creating Git release tag for the "v${{steps.next_semantic_version.outputs.version}}" version
         uses: softprops/action-gh-release@v1
         with: # See https://github.com/softprops/action-gh-release#-customizing
           token: "${{ secrets.GITHUB_TOKEN }}"
-          tag_name: ${{steps.next_semantic_version.outputs.version}}
-          name: "Automatic release ${{steps.next_semantic_version.outputs.version}}"
+          tag_name: "v${{steps.next_semantic_version.outputs.version}}"
+          name: "Automatic release v${{steps.next_semantic_version.outputs.version}}"
           prerelease: true
           generate_release_notes: true
           files: |
@@ -69,7 +69,7 @@ jobs:
           files: |
             CHANGELOG.md
 
-      - name: Updating Git release tag for the major "${{steps.next_semantic_version.outputs.major}}-rc" version
+      - name: Updating Git release tag for the major "v${{steps.next_semantic_version.outputs.major}}-rc" version
         uses: softprops/action-gh-release@v1
         with: # See https://github.com/softprops/action-gh-release#-customizing
           token: "${{ secrets.GITHUB_TOKEN }}"
