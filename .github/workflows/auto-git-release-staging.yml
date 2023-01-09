@@ -1,8 +1,8 @@
 # Summary:
 # Automatically tag and release when changes land on the "main" branch.
 #
-# See https://github.com/PaulHatch/semantic-version https://github.com/PaulHatch/semantic-version/tree/v3.2
-# See https://github.com/marvinpinto/action-automatic-releases https://github.com/marvinpinto/action-automatic-releases/tree/v1.1.0
+# See https://github.com/PaulHatch/semantic-version https://github.com/PaulHatch/semantic-version/tree/v5.0.2
+# See https://github.com/softprops/action-gh-release https://github.com/softprops/action-gh-release/tree/v1
 
 name: 'Auto release (release candidate)'
 on:

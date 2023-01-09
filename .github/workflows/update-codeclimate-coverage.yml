@@ -1,8 +1,8 @@
 # Summary:
 # Run Unit and coverage tests, then upload it to Code Climate dashboard
 #
-# See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v1
-# See https://github.com/paambaati/codeclimate-action https://github.com/paambaati/codeclimate-action/tree/v2.7.5
+# See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v3
+# See https://github.com/paambaati/codeclimate-action https://github.com/paambaati/codeclimate-action/tree/v3.2.0
 
 name: Update Code Climate test coverage
 

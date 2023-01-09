@@ -2,7 +2,7 @@
 # Test if the GitHub Action builds correctly.
 # Makes sure the GitHub Action builds when being built by GitHub Actions.
 #
-# See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v2
+# See https://github.com/actions/checkout https://github.com/actions/checkout/releases/tag/v3
 
 name: 'GitHub Action build test'
 on:
