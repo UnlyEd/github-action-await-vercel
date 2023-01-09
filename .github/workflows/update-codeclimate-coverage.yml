@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-node@v3 # Used to install node environment - XXX https://github.com/actions/setup-node
         with:
           node-version: 18 # Use the same node.js version as the one Vercel's uses (currently node18.x)
+          cache: 'yarn'
   run-tests-coverage:
     name: Run tests coverage and send report to Code Climate
     runs-on: ubuntu-22.04
