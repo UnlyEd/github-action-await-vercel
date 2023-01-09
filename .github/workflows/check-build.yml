@@ -11,6 +11,9 @@ on:
 
 jobs:
   run-build-test:
+    strategy:
+      matrix:
+        version: [ 16, 18, 20 ]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
