@@ -1,7 +1,7 @@
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as process from 'process';
-import { BUILD_DIR, BUILD_MAIN_FILENAME } from '../src/config';
+import {BUILD_DIR, BUILD_MAIN_FILENAME} from '../src/config';
 
 /**
  * Enhance the Node.js environment "global" variable to add our own types
@@ -9,13 +9,9 @@ import { BUILD_DIR, BUILD_MAIN_FILENAME } from '../src/config';
  * @see https://stackoverflow.com/a/42304473/2391795
  */
 declare global {
-  namespace NodeJS {
-    interface Global {
-      muteConsole: () => any;
-      muteConsoleButLog: () => any;
-      unmuteConsole: () => any;
-    }
-  }
+  let muteConsole: () => any;
+  let muteConsoleButLog: () => any;
+  let unmuteConsole: () => any;
 }
 
 /**
@@ -52,16 +48,17 @@ function exec_lib(options: cp.ExecFileSyncOptions): string {
 }
 
 describe('Functional test', () => {
-  const CORRECT_DOMAIN: string = `${process.env.VERCEL_DOMAIN}`;
-  const WRONG_DOMAIN: string = 'i-am-wrong.vercel.app';
+  const CORRECT_DOMAIN = `${process.env.VERCEL_DOMAIN}`;
+  const WRONG_DOMAIN = 'i-am-wrong.vercel.app';
 
   describe('should pass when', () => {
     beforeEach(() => {
+      // @ts-ignore
       global.console = global.unmuteConsole();
     });
 
     describe('using a valid Vercel domain', () => {
-      const MAX_TIMEOUT: string = '2'; // Max timeout in seconds, as string
+      const MAX_TIMEOUT = '2'; // Max timeout in seconds, as string
       const options: cp.ExecFileSyncOptions = {
         env: {
           'INPUT_DEPLOYMENT-URL': CORRECT_DOMAIN,
@@ -90,11 +87,12 @@ describe('Functional test', () => {
 
   describe('should not pass when', () => {
     beforeEach(() => {
+      // @ts-ignore
       global.console = global.muteConsole();
     });
 
     describe('using a wrong Vercel domain', () => {
-      const MAX_TIMEOUT: string = '2'; // Max timeout in seconds, as string
+      const MAX_TIMEOUT = '2'; // Max timeout in seconds, as string
       const options: cp.ExecFileSyncOptions = {
         env: {
           'INPUT_DEPLOYMENT-URL': 'i-am-wrong-domain.vercel.app',
@@ -115,7 +113,7 @@ describe('Functional test', () => {
     });
 
     describe('using a wrong Vercel token', () => {
-      const MAX_TIMEOUT: string = '5'; // Max timeout in seconds, as string
+      const MAX_TIMEOUT = '5'; // Max timeout in seconds, as string
       const options: cp.ExecFileSyncOptions = {
         env: {
           'INPUT_DEPLOYMENT-URL': WRONG_DOMAIN,
