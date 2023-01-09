@@ -74,8 +74,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with: # See https://github.com/softprops/action-gh-release#-customizing
           token: "${{ secrets.GITHUB_TOKEN }}"
-          tag_name: ${{steps.next_semantic_version.outputs.major}}
-          name: "${{steps.next_semantic_version.outputs.major}} latest release (auto-update)"
+          tag_name: "v${{steps.next_semantic_version.outputs.major}}"
+          name: "v${{steps.next_semantic_version.outputs.major}} latest release (auto-update)"
           prerelease: false
           generate_release_notes: true
           files: |
