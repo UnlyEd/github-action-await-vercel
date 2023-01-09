@@ -9,7 +9,7 @@ name: Update Code Climate test coverage
 on:
   push:
     branches:
-      - 'main' # Change this branch name by your CodeClimate "main" branch use
+      - main # Change this branch name by your CodeClimate "main" branch use
 
 jobs:
   # Configures the deployment environment, install dependencies (like node, npm, etc.) that are requirements for the upcoming jobs

@@ -9,9 +9,6 @@ name: 'GitHub Action integration test'
 on:
   pull_request:
   push:
-    branches:
-      - main
-      - 'releases/*'
 
 jobs:
   run-integration-test:
