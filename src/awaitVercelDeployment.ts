@@ -16,13 +16,13 @@ const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<Vercel
     const timeoutTime = new Date().getTime() + timeout;
 
     while (new Date().getTime() < timeoutTime) {
-      deployment = await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
+      deployment = (await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
         headers: {
           Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
         },
       })
         .then((data) => data.json())
-        .catch((error: string) => reject(error));
+        .catch((error: string) => reject(error))) as VercelDeployment;
       core.debug(`Received these data from Vercel: ${JSON.stringify(deployment)}`);
 
       if (deployment.readyState === 'READY' || deployment.readyState === 'ERROR') {
