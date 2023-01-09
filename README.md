@@ -222,7 +222,7 @@ Here are a few useful options you can use to pin a more-or-less specific version
 
 **"But, what is the issue with the `@{MAJOR}-{MINOR}-{PATCH}` way to pin a specific version"?**
 
-> Well, if our repositories gets hacked by a 3rd party, **they can easily change all Git tags to a different commit**, which could contain malicious code.
+> Well, if this repository gets hacked by a 3rd party, **they can easily change all Git tags to a different commit**, which could contain malicious code.
 
 That's why **pinning a specific commit SHA is the only truly safe option**. This way, the code you're using **cannot be changed against your will**.
 
