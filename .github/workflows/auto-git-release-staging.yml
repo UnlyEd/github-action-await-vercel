@@ -50,7 +50,7 @@ jobs:
       - name: Creating Git release tag for the ${{steps.next_semantic_version.outputs.version}} version
         uses: softprops/action-gh-release@v1
         with: # See https://github.com/softprops/action-gh-release#-customizing
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           tag_name: ${{steps.next_semantic_version.outputs.version}}
           name: "Automatic release ${{steps.next_semantic_version.outputs.version}}"
           prerelease: true
@@ -61,7 +61,7 @@ jobs:
       - name: Updating Git release tag for "latest-rc" version
         uses: softprops/action-gh-release@v1
         with: # See https://github.com/softprops/action-gh-release#-customizing
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           tag_name: latest-rc
           name: "Latest release (auto-update) - UNSAFE for production usage"
           prerelease: true
