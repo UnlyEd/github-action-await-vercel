@@ -202,7 +202,7 @@ new [release](../../releases).
 - `Patch`: Any other change.
     - E.g: Documentation, tests, refactoring, bug fix, etc.
 
-## Releases versions:
+## Release versions
 
 The examples above use an auto-updated major version tag (`@v1`).
 It is also possible to use the `@latest` tag.  (RC stands for "Release candidate", which is similar to a Beta version)
