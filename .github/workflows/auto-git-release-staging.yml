@@ -15,9 +15,12 @@ jobs:
   tag-and-release:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - name: Fetching all commits for the current branch
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Force fetch all commits - See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
+
+      - run: "echo \"GITHUB_SHA: ${{ github.sha }}\""
 
       # Outputs documentation: https://github.com/PaulHatch/semantic-version/blob/master/src/main.ts#L22-L33
       - name: Resolving next Release Candidate version using semantic-version
@@ -65,18 +68,22 @@ jobs:
           --title "v${{steps.next_semantic_version.outputs.major}}-rc MAJOR release (auto-updated)" \
           --generate-notes \
           --prerelease \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       # See https://cli.github.com/manual/gh_release_edit
-      - name: Updating existing release for the major "v${{steps.next_semantic_version.outputs.major}}-rc" version
+      - name: Recreating existing release for the major "v${{steps.next_semantic_version.outputs.major}}-rc" version
         if: ${{ steps.majorTagExists.outputs.exists == 'true' }}
         run: |
-          gh release edit v${{steps.next_semantic_version.outputs.major}}-rc \
+          # Delete and create the release again
+          gh release delete v${{steps.next_semantic_version.outputs.major}}-rc --cleanup-tag --yes
+          
+          gh release create v${{steps.next_semantic_version.outputs.major}}-rc \
           --title "v${{steps.next_semantic_version.outputs.major}}-rc MAJOR release (auto-updated)" \
+          --generate-notes \
           --prerelease \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -97,17 +104,21 @@ jobs:
           --title "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc MINOR release (auto-updated)" \
           --generate-notes \
           --prerelease \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       # See https://cli.github.com/manual/gh_release_edit
-      - name: Updating existing release for the minor "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc" version
+      - name: Recreating existing release for the minor "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc" version
         if: ${{ steps.minorTagExists.outputs.exists == 'true' }}
         run: |
-          gh release edit v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc \
+          # Delete and create the release again
+          gh release delete v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc --cleanup-tag --yes
+          
+          gh release create v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc \
           --title "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}-rc MINOR release (auto-updated)" \
+          --generate-notes \
           --prerelease \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
