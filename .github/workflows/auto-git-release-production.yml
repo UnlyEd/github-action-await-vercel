@@ -4,7 +4,6 @@
 #
 # See https://github.com/PaulHatch/semantic-version https://github.com/PaulHatch/semantic-version/tree/v5.0.2
 # See https://github.com/softprops/action-gh-release https://github.com/softprops/action-gh-release/tree/v1
-# See https://github.com/Actions-R-Us/actions-tagger https://github.com/Actions-R-Us/actions-tagger/releases/tag/v2.0.3
 
 name: 'Auto release'
 on:
@@ -20,6 +19,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Force fetch all commits - See https://github.com/PaulHatch/semantic-version#important-note-regarding-the-checkout-action
+
+      - run: "echo \"GITHUB_SHA: ${{ github.sha }}\""
 
       # Outputs documentation: https://github.com/PaulHatch/semantic-version/blob/master/src/main.ts#L22-L33
       - name: Resolving next Release Candidate version using semantic-version
@@ -56,7 +57,7 @@ jobs:
           --title "${{steps.next_semantic_version.outputs.version_tag}}" \
           --latest \
           --generate-notes \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -76,17 +77,21 @@ jobs:
           gh release create v${{steps.next_semantic_version.outputs.major}} \
           --title "v${{steps.next_semantic_version.outputs.major}} MAJOR release (auto-updated)" \
           --generate-notes \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       # See https://cli.github.com/manual/gh_release_edit
-      - name: Updating existing release for the major "v${{steps.next_semantic_version.outputs.major}}" version
+      - name: Recreating existing release for the major "v${{steps.next_semantic_version.outputs.major}}" version
         if: ${{ steps.majorTagExists.outputs.exists == 'true' }}
         run: |
-          gh release edit v${{steps.next_semantic_version.outputs.major}} \
+          # Delete and create the release again
+          gh release delete v${{steps.next_semantic_version.outputs.major}} --cleanup-tag --yes
+          
+          gh release create v${{steps.next_semantic_version.outputs.major}} \
           --title "v${{steps.next_semantic_version.outputs.major}} MAJOR release (auto-updated)" \
-          --target $GITHUB_SHA
+          --generate-notes \
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -106,16 +111,20 @@ jobs:
           gh release create v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} \
           --title "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} MINOR release (auto-updated)" \
           --generate-notes \
-          --target $GITHUB_SHA
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       # See https://cli.github.com/manual/gh_release_edit
-      - name: Updating existing release for the minor "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}" version
+      - name: Recreating existing release for the minor "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}}" version
         if: ${{ steps.minorTagExists.outputs.exists == 'true' }}
         run: |
-          gh release edit v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} \
+          # Delete and create the release again
+          gh release delete v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} --cleanup-tag --yes
+          
+          gh release create v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} \
           --title "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} MINOR release (auto-updated)" \
-          --target $GITHUB_SHA
+          --generate-notes \
+          --target "${{github.sha}}"
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
