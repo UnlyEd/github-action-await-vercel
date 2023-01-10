@@ -54,6 +54,7 @@ jobs:
         run: |
           gh release create ${{steps.next_semantic_version.outputs.version_tag}} \
           --title "${{steps.next_semantic_version.outputs.version_tag}}" \
+          --latest \
           --generate-notes \
           --target $GITHUB_SHA
         env:
@@ -74,7 +75,6 @@ jobs:
         run: |
           gh release create v${{steps.next_semantic_version.outputs.major}} \
           --title "v${{steps.next_semantic_version.outputs.major}} MAJOR release (auto-updated)" \
-          --latest \
           --generate-notes \
           --target $GITHUB_SHA
         env:
@@ -86,7 +86,6 @@ jobs:
         run: |
           gh release edit v${{steps.next_semantic_version.outputs.major}} \
           --title "v${{steps.next_semantic_version.outputs.major}} MAJOR release (auto-updated)" \
-          --latest \
           --target $GITHUB_SHA
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -107,7 +106,6 @@ jobs:
           gh release create v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} \
           --title "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} MINOR release (auto-updated)" \
           --generate-notes \
-          --latest \
           --target $GITHUB_SHA
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -118,7 +116,6 @@ jobs:
         run: |
           gh release edit v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} \
           --title "v${{steps.next_semantic_version.outputs.major}}.${{steps.next_semantic_version.outputs.minor}} MINOR release (auto-updated)" \
-          --latest \
           --target $GITHUB_SHA
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
