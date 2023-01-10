@@ -52,8 +52,8 @@ jobs:
 
       - name: Creating Git release tag for the "${{steps.next_semantic_version.outputs.version_tag}}" version
         run: |
-          gh release create v${{steps.next_semantic_version.outputs.version_tag}} \
-          --title "v${{steps.next_semantic_version.outputs.version_tag}}" \
+          gh release create ${{steps.next_semantic_version.outputs.version_tag}} \
+          --title "${{steps.next_semantic_version.outputs.version_tag}}" \
           --generate-notes \
           --target $GITHUB_SHA
         env:
