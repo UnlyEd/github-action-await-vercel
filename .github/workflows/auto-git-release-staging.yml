@@ -48,16 +48,6 @@ jobs:
           echo "previous_commit: ${{steps.next_semantic_version.outputs.previous_commit}}"
           echo "current_commit: ${{steps.next_semantic_version.outputs.current_commit}}"
 
-      - name: Creating Git release tag for the "v${{steps.next_semantic_version.outputs.version}}" version
-        run: |
-          gh release create v${{steps.next_semantic_version.outputs.version}} \
-          --title "v${{steps.next_semantic_version.outputs.version}}" \
-          --generate-notes \
-          --prerelease \
-          --target $GITHUB_SHA
-        env:
-          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
       # Check if the major version already exists (if it doesn't, we'll create it - if it does, we'll update it)
       - name: Check if tag "v${{steps.next_semantic_version.outputs.major}}-rc" exists
         uses: mukunku/tag-exists-action@v1.2.0
