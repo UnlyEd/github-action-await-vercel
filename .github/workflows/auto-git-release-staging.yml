@@ -24,7 +24,7 @@ jobs:
 
       # Outputs documentation: https://github.com/PaulHatch/semantic-version/blob/master/src/main.ts#L22-L33
       - name: Resolving next Release Candidate version using semantic-version
-        uses: paulhatch/semantic-version@v5.0.2
+        uses: paulhatch/semantic-version@v5.0.3
         id: next_semantic_version
         with: # See https://github.com/PaulHatch/semantic-version#usage
           tag_prefix: "v" # The prefix to use to identify tags
