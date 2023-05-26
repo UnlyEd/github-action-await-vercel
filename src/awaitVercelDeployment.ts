@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import fetch from 'node-fetch';
+import fetch from '@adobe/node-fetch-retry';
 import { VERCEL_BASE_API_ENDPOINT } from './config';
 import { VercelDeployment } from './types/VercelDeployment';
 
@@ -19,6 +19,9 @@ const awaitVercelDeployment = (baseUrl: string, timeout: number): Promise<Vercel
       deployment = (await fetch(`${VERCEL_BASE_API_ENDPOINT}/v11/now/deployments/get?url=${baseUrl}`, {
         headers: {
           Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
+        },
+        retryOptions: {
+          retryMaxDuration: timeout * 1000, // Convert seconds to milliseconds
         },
       })
         .then((data) => data.json())

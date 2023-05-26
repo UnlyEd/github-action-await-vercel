@@ -77,3 +77,4 @@ exclude_patterns:
   - "**/tests/"
   - "**/vendor/"
   - "**/*.d.ts"
+  - "**/*.js.map"
