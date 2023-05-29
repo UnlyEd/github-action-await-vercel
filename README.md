@@ -22,6 +22,7 @@ jobs:
         with:
           deployment-url: nextjs-bzyss249z.vercel.app # TODO Replace by the domain you want to test
           timeout: 10 # Wait for 10 seconds before failing
+          poll-interval: 1 # Wait for 1 second before each retry
 
       - name: Display deployment status
         run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
@@ -87,7 +88,7 @@ Name | Required | Default | Description
 > This might take quite some time (depending on your project), and increasing the timeout to `600` (10mn) (or similar) is probably what you'll want to do in such case, because you need to take into account the time it'll take for Vercel to deploy.
 > - The default of `10` seconds is because we _assume_ you'll call this action after the deployment has reached `BUILDING` state, and the time it takes for Vercel to reach `READY` or `ERROR` from `BUILDING` is rather short.
 
-> **Tip**: `poll-interval` prevents spamming Vercel's API such that the number of requests stays within their rate limits. [Vercel allows](https://vercel.com/docs/concepts/limits/overview#rate-limits) 500 deployment retrievals every minute, and the 1 second default value will allow for about 8 concurrent executions of this GitHub Action.
+> **Tip**: `poll-interval` prevents spamming Vercel's API such that the number of requests stays within their rate limits. [Vercel allows](https://vercel.com/docs/concepts/limits/overview#rate-limits) 500 deployment retrievals every minute, and the 1-second default value will allow for about 8 concurrent executions of this GitHub Action.
 
 #### Outputs
 This action forwards the [Vercel API response](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) as return value.
