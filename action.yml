@@ -8,8 +8,13 @@ inputs:
     description: 'Url you want to wait for'
     required: true
   timeout:
-    description: 'Custom timeout value (default: "10" (seconds))'
+    description: 'Duration (in seconds) to wait for a terminal deployment status'
     required: false
+    default: '10'
+  poll-interval:
+    description: 'Duration (in seconds) to wait in between polled Vercel API requests'
+    required: false
+    default: '1'
 outputs:
   deploymentDetails:
     description: 'Forwarded Vercel API response - See https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters'

@@ -1,7 +1,7 @@
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as process from 'process';
-import {BUILD_DIR, BUILD_MAIN_FILENAME} from '../src/config';
+import { BUILD_DIR, BUILD_MAIN_FILENAME } from '../src/config';
 
 /**
  * Enhance the Node.js environment "global" variable to add our own types
@@ -39,7 +39,15 @@ function exec_lib(options: cp.ExecFileSyncOptions): string {
 
   try {
     // console.debug(`Running command "${nodeBinaryPath} ${mainFilePath}"`);
-    return cp.execFileSync(nodeBinaryPath, [mainFilePath], options).toString();
+    return cp
+      .execFileSync(nodeBinaryPath, [mainFilePath], {
+        env: {
+          NODE_ENV: 'test',
+          ...options.env,
+        },
+        ...options,
+      })
+      .toString();
   } catch (e) {
     console.error(e?.output?.toString());
     console.error(e);
@@ -63,6 +71,7 @@ describe('Functional test', () => {
         env: {
           'INPUT_DEPLOYMENT-URL': CORRECT_DOMAIN,
           'INPUT_TIMEOUT': MAX_TIMEOUT,
+          'INPUT_POLL-INTERVAL': '1',
           'VERCEL_TOKEN': process.env.VERCEL_TOKEN,
         },
       };
@@ -97,6 +106,7 @@ describe('Functional test', () => {
         env: {
           'INPUT_DEPLOYMENT-URL': 'i-am-wrong-domain.vercel.app',
           'INPUT_TIMEOUT': MAX_TIMEOUT,
+          'INPUT_POLL-INTERVAL': '1',
           'VERCEL_TOKEN': process.env.VERCEL_TOKEN,
         },
       };
@@ -118,6 +128,7 @@ describe('Functional test', () => {
         env: {
           'INPUT_DEPLOYMENT-URL': WRONG_DOMAIN,
           'INPUT_TIMEOUT': MAX_TIMEOUT,
+          'INPUT_POLL-INTERVAL': '1',
           'VERCEL_TOKEN': 'not valid',
         },
       };
