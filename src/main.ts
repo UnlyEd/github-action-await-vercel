@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import awaitVercelDeployment from './awaitVercelDeployment';
-import { DEFAULT_TIMEOUT } from './config';
+import { millisecondsFromInput } from './config';
 import { VercelDeployment } from './types/VercelDeployment';
 
 /**
@@ -27,13 +27,16 @@ const run = (): void => {
   }
 
   try {
-    const urlToWait: string = core.getInput('deployment-url');
-    core.debug(`Url to wait for: ${urlToWait}`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
+    const url: string = core.getInput('deployment-url');
+    core.debug(`Url to wait for: ${url}`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
 
-    const timeout: number = (+core.getInput('timeout') || DEFAULT_TIMEOUT) * 1000;
+    const timeout: number = millisecondsFromInput('timeout');
     core.debug(`Timeout used: ${timeout}`);
 
-    awaitVercelDeployment(urlToWait, timeout)
+    const pollInterval: number = millisecondsFromInput('poll-interval');
+    core.debug(`Poll interval used: ${pollInterval}`);
+
+    awaitVercelDeployment({ url, timeout, pollInterval })
       .then((deployment: VercelDeployment) => {
         core.setOutput('deploymentDetails', deployment);
       })

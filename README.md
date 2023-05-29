@@ -22,6 +22,7 @@ jobs:
         with:
           deployment-url: nextjs-bzyss249z.vercel.app # TODO Replace by the domain you want to test
           timeout: 10 # Wait for 10 seconds before failing
+          poll-interval: 1 # Wait for 1 second before each retry
 
       - name: Display deployment status
         run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
@@ -35,13 +36,13 @@ It waits until a Vercel deployment domain is marked as "READY". _(See [`readySta
 You must know the domain url you want to await for and provide it as `deployment-url` input.
 
 ## Why/when should you use it?
-If you're using Vercel to deploy your apps, and you use some custom deployment pipeline using GitHub Actions, 
+If you're using Vercel to deploy your apps, and you use some custom deployment pipeline using GitHub Actions,
 you might need to wait for a deployment to be ready before running other processes _(e.g: Your end-to-end tests using [Cypress](https://www.cypress.io/))_.
 
-> For instance, if you don't wait for the deployment to be ready, 
+> For instance, if you don't wait for the deployment to be ready,
 then you might sometimes run your E2E tests suite against the Vercel's login page, instead of your actual deployment.
 
-If your GitHub Actions sometimes succeeds but sometimes fails, then you probably need to await for the domain to be ready. 
+If your GitHub Actions sometimes succeeds but sometimes fails, then you probably need to await for the domain to be ready.
 This action might help doing so, as it will wait until the Vercel deployment is really ready, before starting your next GitHub Action step.
 
 ## What else does this action do?
@@ -71,7 +72,7 @@ Name | Description
 --- | ---
 `VERCEL_TOKEN` | Your [vercel token](https://vercel.com/account/tokens) is required to fetch the Vercel API on your behalf and get the status of your deployment. [See usage in code](https://github.com/UnlyEd/github-action-await-vercel/search?q=VERCEL_TOKEN)
 
-> _**N.B**: You don't have to use a GitHub Secret to provide the `VERCEL_TOKEN`. But you should do so, as it's a good security practice, because this way the token will be [hidden in the logs (encrypted)](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)._ 
+> _**N.B**: You don't have to use a GitHub Secret to provide the `VERCEL_TOKEN`. But you should do so, as it's a good security practice, because this way the token will be [hidden in the logs (encrypted)](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)._
 
 ### Action's API
 
@@ -79,12 +80,15 @@ Name | Description
 Name | Required | Default | Description
 ---  | --- |--- |---
 `deployment-url`|✅| |Deployment domain (e.g: `my-app-hfq88g3jt.vercel.app`, `my-app.vercel.app`, etc.).
-`timeout`|✖️|`10`|How long (in seconds) the action waits for the deployment status to reach either `READY` or `ERROR` state.
+`timeout`|✖️|`10`|Duration (in seconds) the action waits for the deployment status to reach either `READY` or `ERROR` state.
+`poll-interval`|✖️|`1`|Duration (in seconds) the action waits in between polled Vercel API requests.
 
 > **Tip**: You might want to adapt the `timeout` to your use case.
 > - For instance, if you're calling this action **right after having triggered the Vercel deployment**, then it'll go through `INITIALIZING > ANALYZING > BUILDING > DEPLOYING` phases before reaching `READY` or `ERROR` state.
 > This might take quite some time (depending on your project), and increasing the timeout to `600` (10mn) (or similar) is probably what you'll want to do in such case, because you need to take into account the time it'll take for Vercel to deploy.
 > - The default of `10` seconds is because we _assume_ you'll call this action after the deployment has reached `BUILDING` state, and the time it takes for Vercel to reach `READY` or `ERROR` from `BUILDING` is rather short.
+
+> **Tip**: `poll-interval` prevents spamming Vercel's API such that the number of requests stays within their rate limits. [Vercel allows](https://vercel.com/docs/concepts/limits/overview#rate-limits) 500 deployment retrievals every minute, and the 1-second default value will allow for about 8 concurrent executions of this GitHub Action.
 
 #### Outputs
 This action forwards the [Vercel API response](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) as return value.
@@ -131,7 +135,7 @@ jobs:
 
 Check the documentation to see what information [`deploymentDetails`](https://vercel.com/docs/api#endpoints/deployments/get-a-single-deployment/response-parameters) contains.
 
-### 2. Dynamically resolve the Vercel deployment url 
+### 2. Dynamically resolve the Vercel deployment url
 
 This is a real-world use case example, from [Next Right Now](https://github.com/UnlyEd/next-right-now).
 
