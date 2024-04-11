@@ -13,7 +13,7 @@
 ```yaml
 jobs:
   wait-for-vercel-deployment:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: UnlyEd/github-action-await-vercel@v1 # TODO best practices recommend to use a fixed version instead of @v1 for production usage (i.e: @v1.2.32)
         id: await-vercel
@@ -116,7 +116,7 @@ on:
 
 jobs:
   wait-for-vercel-deployment:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Retrieve deployment URL (example on how to set an ENV var)
         run: "echo VERCEL_DEPLOYMENT_URL=nextjs-bzyss249z.vercel.app >> $GITHUB_ENV"
